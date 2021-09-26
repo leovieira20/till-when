@@ -2,7 +2,7 @@
 using TestStack.BDDfy;
 using Xunit;
 
-namespace TillWhen.Domain.Tests
+namespace TillWhen.Domain.Tests.Entities.Project
 {
     public partial class ProjectTestsSteps
     {
@@ -34,7 +34,7 @@ namespace TillWhen.Domain.Tests
                 .And(x => x.AndProjectHasQuotaOf(TimeSpan.FromHours(4)))
                 .And(x => x.AndProjectHasPendingTaskOfDuration(TimeSpan.FromHours(8)))
                 .When(x => x.WhenCalculatingTheEstimationOfTheProject())
-                .Then(x => x.ThenEstimateShouldBe(TimeSpan.FromHours(16)))
+                .Then(x => x.ThenEstimateShouldBe(TimeSpan.FromHours(8)))
                 .BDDfy();
         }
 

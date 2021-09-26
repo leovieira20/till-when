@@ -7,10 +7,11 @@ namespace TillWhen.Domain.Entities
     public class Project
     {
         private TimeSpan _quota;
+        private readonly Dictionary<DateTime, List<Task>> _tasksPerDay;
 
         public static Project Create()
         {
-            return new() { StartingDate = DateTime.UtcNow };
+            return new();
         }
 
         public static Project WithStartingDate(DateTime startingDate)
@@ -18,32 +19,73 @@ namespace TillWhen.Domain.Entities
             return new() { StartingDate = startingDate };
         }
 
+        public static Project WithQuota(TimeSpan quota)
+        {
+            return new()
+            {
+                _quota = quota
+            };
+        }
+
         private Project()
         {
             _quota = TimeSpan.FromHours(16);
+            StartingDate = DateTime.UtcNow.Date;
+            _tasksPerDay = new() { { StartingDate, new() } };
             Tasks = new();
         }
 
         public void AddTask(Task task)
         {
-            Tasks.Add(task);
+            var lastDayWithEnoughCapacity = _tasksPerDay
+                .Keys
+                .OrderByDescending(x => x.Date)
+                .FirstOrDefault();
+
+            var tasksEstimationForDate = _tasksPerDay[lastDayWithEnoughCapacity]
+                .Sum(x => x.GetEstimate());
+
+            var dailyQuotaLeft = _quota.TotalMinutes - tasksEstimationForDate;
+            if (task.GetEstimate() <= dailyQuotaLeft)
+            {
+                _tasksPerDay[lastDayWithEnoughCapacity].Add(task);
+
+                task.SetStartDate(lastDayWithEnoughCapacity);
+                Tasks.Add(task);
+            }
+            else if (dailyQuotaLeft == 0)
+            {
+                _tasksPerDay.Add(lastDayWithEnoughCapacity.AddDays(1), new());
+                AddTask(task);
+            }
+            else
+            {
+                var taskWithReducedEstimate = task.ReduceEstimate(dailyQuotaLeft);
+                taskWithReducedEstimate.SetStartDate(lastDayWithEnoughCapacity);
+                
+                _tasksPerDay[lastDayWithEnoughCapacity].Add(taskWithReducedEstimate);
+                Tasks.Add(taskWithReducedEstimate);
+                
+                _tasksPerDay.Add(lastDayWithEnoughCapacity.AddDays(1), new());
+                
+                AddTask(taskWithReducedEstimate);
+            }
         }
 
         public TimeSpan Estimate
         {
             get
             {
-                var totalTaskMinutes = Tasks
-                    .Where(x => x.Status != TaskStatus.Completed)
-                    .Sum(x => x.Estimate.TotalMinutes);
-
-                var shares = totalTaskMinutes / _quota.TotalMinutes;
-                if (shares <= 1)
+                var totalEstimation = 0.0;
+                foreach (var date in _tasksPerDay.Keys)
                 {
-                    return TimeSpan.FromMinutes(totalTaskMinutes);
+                    var estimationForDay = _tasksPerDay[date]
+                        .Where(x => x.Status != TaskStatus.Completed)
+                        .Sum(x => x.GetEstimate());
+                    totalEstimation += estimationForDay;
                 }
 
-                return TimeSpan.FromMinutes(totalTaskMinutes * shares);
+                return TimeSpan.FromMinutes(totalEstimation);
             }
         }
 
@@ -60,29 +102,17 @@ namespace TillWhen.Domain.Entities
 
         public DateTime GetStartingDateForTask(Guid id)
         {
-            var remainingQuota = _quota;
-            foreach (var t in PendingTasks)
-            {
-                if (t.Id == id)
-                {
-                    if (remainingQuota >= t.Estimate)
-                    {
-                        return StartingDate;
-                    }
+            return Tasks
+                .SingleOrDefault(x => x.Id == id)?.StartingDate ?? throw new ArgumentException($"Invalid task id {id}");
+        }
 
-                    return StartingDate.AddDays(1);
-                }
-
-                remainingQuota = remainingQuota.Subtract(t.Estimate);
-            }
-
-            throw new ArgumentException($"Invalid task id {id}");
+        public List<Task> GetTasksForDate(DateTime date)
+        {
+            return _tasksPerDay[date.Date];
         }
 
         public List<Task> PendingTasks => Tasks.Where(x => x.Status != TaskStatus.Completed).ToList();
-
         private List<Task> Tasks { get; }
-
-        private DateTime StartingDate { get; set; }
+        private DateTime StartingDate { get; init; }
     }
 }

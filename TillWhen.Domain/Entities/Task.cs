@@ -2,18 +2,26 @@
 
 namespace TillWhen.Domain.Entities
 {
-    public class Task
+    public record Task
     {
-        public Task()
-        {
-            Id = Guid.NewGuid();
-            Status = TaskStatus.Pending;
-        }
-
-        public Task(Guid id)
+        public Task(Guid id, TimeSpan estimate)
         {
             Id = id;
             Status = TaskStatus.Pending;
+            Estimate = estimate;
+        }
+
+        public double GetEstimate()
+        {
+            return Estimate.TotalMinutes;
+        }
+
+        public Task ReduceEstimate(double dailyQuotaLeft)
+        {
+            return new(Id, Estimate.Subtract(TimeSpan.FromMinutes(dailyQuotaLeft)))
+            {
+                Status = Status
+            };
         }
 
         public void Complete()
@@ -21,8 +29,14 @@ namespace TillWhen.Domain.Entities
             Status = TaskStatus.Completed;
         }
 
-        public Guid Id { get; init; }
-        public TimeSpan Estimate { get; init; }
+        public void SetStartDate(DateTime startingDate)
+        {
+            StartingDate = startingDate;
+        }
+
+        public Guid Id { get; }
         public string Status { get; private set; }
+        public DateTime StartingDate { get; private set; }
+        public TimeSpan Estimate { get; }
     }
 }

@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using TillWhen.Domain.Entities;
+using ProjectEntity = TillWhen.Domain.Entities.Project;
 
-namespace TillWhen.Domain.Tests
+namespace TillWhen.Domain.Tests.Entities.Project
 {
     public partial class ProjectTestsSteps
     {
-        private Project _project;
+        private ProjectEntity _project;
         private TimeSpan _projectEstimate;
         private readonly Dictionary<Guid, DateTime> _startingDates;
         private Exception _exception;
+        private Guid _taskId;
 
         public ProjectTestsSteps()
         {
@@ -19,23 +21,28 @@ namespace TillWhen.Domain.Tests
         
         private void GivenProjectWithStartingDate(DateTime startingDate)
         {
-            _project = Project.WithStartingDate(startingDate);
+            _project = ProjectEntity.WithStartingDate(startingDate);
         }
 
         private void GivenProject()
         {
-            _project = Project.Create();
+            _project = ProjectEntity.Create();
         }
 
         private void AndProjectHasPendingTaskOfDuration(TimeSpan duration)
         {
-            Task task = new() { Estimate = duration };
+            var taskId = Guid.NewGuid();
+            
+            Task task = new(taskId, duration);
+            
+            _taskId = taskId;
+            
             _project.AddTask(task);
         }
 
         private void AndProjectHasPendingTaskWithId(Guid id)
         {
-            Task task = new(id) { Id = id };
+            Task task = new(id, TimeSpan.FromHours(1));
             _project.AddTask(task);
         }
 
@@ -46,7 +53,7 @@ namespace TillWhen.Domain.Tests
 
         private void AndProjectHasCompletedTaskWithDurationOf(TimeSpan duration)
         {
-            Task task = new() { Estimate = duration };
+            Task task = new(new(), duration);
             task.Complete();
 
             _project.AddTask(task);
@@ -54,7 +61,7 @@ namespace TillWhen.Domain.Tests
 
         private void AndProjectHasPendingTaskWithIdAndEstimation(Guid id, TimeSpan duration)
         {
-            Task task = new() { Id = id, Estimate = duration };
+            Task task = new(id, duration);
             _project.AddTask(task);
         }
 
