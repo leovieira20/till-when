@@ -4,6 +4,7 @@ namespace TillWhen.Domain.Entities
 {
     public record Task
     {
+        private Task() { }
         public Task(Guid id, TimeSpan estimate)
         {
             Id = id;
@@ -34,7 +35,7 @@ namespace TillWhen.Domain.Entities
             StartingDate = startingDate;
         }
 
-        public Guid Id { get; }
+        public Guid Id { get; private set; }
         public string Status { get; private set; }
         public DateTime StartingDate { get; private set; }
         public TimeSpan Estimate { get; }

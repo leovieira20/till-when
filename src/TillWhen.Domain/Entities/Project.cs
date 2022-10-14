@@ -111,6 +111,7 @@ namespace TillWhen.Domain.Entities
             return _tasksPerDay[date.Date];
         }
 
+        public Guid Id { get; set; }
         public List<Task> PendingTasks => Tasks.Where(x => x.Status != TaskStatus.Completed).ToList();
         private List<Task> Tasks { get; }
         private DateTime StartingDate { get; init; }
