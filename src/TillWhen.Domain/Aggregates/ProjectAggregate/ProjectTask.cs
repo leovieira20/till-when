@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace TillWhen.Domain.Entities
+namespace TillWhen.Domain.Aggregates.ProjectAggregate
 {
-    public record Task
+    public record ProjectTask
     {
-        private Task() { }
-        public Task(Guid id, TimeSpan estimate)
+        private ProjectTask() { }
+        public ProjectTask(Guid id, TimeSpan estimate)
         {
             Id = id;
             Status = TaskStatus.Pending;
@@ -17,7 +17,7 @@ namespace TillWhen.Domain.Entities
             return Estimate.TotalMinutes;
         }
 
-        public Task ReduceEstimate(double dailyQuotaLeft)
+        public ProjectTask ReduceEstimate(double dailyQuotaLeft)
         {
             return new(Id, Estimate.Subtract(TimeSpan.FromMinutes(dailyQuotaLeft)))
             {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using TestStack.BDDfy;
-using TillWhen.Domain.Entities;
+using TillWhen.Domain.Aggregates.ProjectAggregate;
 using Xunit;
-using ProjectEntity = TillWhen.Domain.Entities.Project;
+using ProjectEntity = TillWhen.Domain.Aggregates.ProjectAggregate.Project;
 
 namespace TillWhen.Domain.Tests.Entities.Queue
 {
@@ -51,7 +51,7 @@ namespace TillWhen.Domain.Tests.Entities.Queue
         private void GivenQueueWithOnProjectAndOnePendingTask()
         {
             var project = ProjectEntity.Create();
-            project.AddTask(new Task(new (), TimeSpan.FromHours(1)));
+            project.AddTask(new ProjectTask(new (), TimeSpan.FromHours(1)));
 
             var projects = new List<ProjectEntity>
             {
@@ -65,8 +65,8 @@ namespace TillWhen.Domain.Tests.Entities.Queue
         {
             var project = ProjectEntity.WithQuota(TimeSpan.FromHours(4));
 
-            project.AddTask(new Task(new(), TimeSpan.FromHours(4)));
-            project.AddTask(new Task(new(), TimeSpan.FromHours(4)));
+            project.AddTask(new ProjectTask(new(), TimeSpan.FromHours(4)));
+            project.AddTask(new ProjectTask(new(), TimeSpan.FromHours(4)));
 
             var projects = new List<ProjectEntity>
             {
@@ -134,7 +134,7 @@ namespace TillWhen.Domain.Tests.Entities.Queue
             Tasks = new();
         }
 
-        public static QueueDay WithTasks(List<Task> tasks)
+        public static QueueDay WithTasks(List<ProjectTask> tasks)
         {
             return new()
             {
@@ -142,6 +142,6 @@ namespace TillWhen.Domain.Tests.Entities.Queue
             };
         }
 
-        public List<Task> Tasks { get; private init; }
+        public List<ProjectTask> Tasks { get; private init; }
     }
 }

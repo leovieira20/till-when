@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TillWhen.Domain.Entities
+namespace TillWhen.Domain.Aggregates.ProjectAggregate
 {
     public class Project
     {
         private TimeSpan _quota;
-        private readonly Dictionary<DateTime, List<Task>> _tasksPerDay;
+        private readonly Dictionary<DateTime, List<ProjectTask>> _tasksPerDay;
 
         public static Project Create()
         {
@@ -35,7 +35,7 @@ namespace TillWhen.Domain.Entities
             Tasks = new();
         }
 
-        public void AddTask(Task task)
+        public void AddTask(ProjectTask task)
         {
             var lastDayWithEnoughCapacity = _tasksPerDay
                 .Keys
@@ -106,14 +106,14 @@ namespace TillWhen.Domain.Entities
                 .SingleOrDefault(x => x.Id == id)?.StartingDate ?? throw new ArgumentException($"Invalid task id {id}");
         }
 
-        public List<Task> GetTasksForDate(DateTime date)
+        public List<ProjectTask> GetTasksForDate(DateTime date)
         {
             return _tasksPerDay[date.Date];
         }
 
         public Guid Id { get; set; }
-        public List<Task> PendingTasks => Tasks.Where(x => x.Status != TaskStatus.Completed).ToList();
-        private List<Task> Tasks { get; }
+        public List<ProjectTask> PendingTasks => Tasks.Where(x => x.Status != TaskStatus.Completed).ToList();
+        private List<ProjectTask> Tasks { get; }
         private DateTime StartingDate { get; init; }
     }
 }

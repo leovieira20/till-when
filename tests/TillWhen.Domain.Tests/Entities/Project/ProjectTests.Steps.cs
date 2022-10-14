@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using TillWhen.Domain.Entities;
-using ProjectEntity = TillWhen.Domain.Entities.Project;
+using TillWhen.Domain.Aggregates.ProjectAggregate;
+using ProjectEntity = TillWhen.Domain.Aggregates.ProjectAggregate.Project;
 
 namespace TillWhen.Domain.Tests.Entities.Project
 {
@@ -33,7 +33,7 @@ namespace TillWhen.Domain.Tests.Entities.Project
         {
             var taskId = Guid.NewGuid();
             
-            Task task = new(taskId, duration);
+            ProjectTask task = new(taskId, duration);
             
             _taskId = taskId;
             
@@ -42,7 +42,7 @@ namespace TillWhen.Domain.Tests.Entities.Project
 
         private void AndProjectHasPendingTaskWithId(Guid id)
         {
-            Task task = new(id, TimeSpan.FromHours(1));
+            ProjectTask task = new(id, TimeSpan.FromHours(1));
             _project.AddTask(task);
         }
 
@@ -53,7 +53,7 @@ namespace TillWhen.Domain.Tests.Entities.Project
 
         private void AndProjectHasCompletedTaskWithDurationOf(TimeSpan duration)
         {
-            Task task = new(new(), duration);
+            ProjectTask task = new(new(), duration);
             task.Complete();
 
             _project.AddTask(task);
@@ -61,7 +61,7 @@ namespace TillWhen.Domain.Tests.Entities.Project
 
         private void AndProjectHasPendingTaskWithIdAndEstimation(Guid id, TimeSpan duration)
         {
-            Task task = new(id, duration);
+            ProjectTask task = new(id, duration);
             _project.AddTask(task);
         }
 

@@ -2,9 +2,9 @@
 
 namespace TillWhen.Api.Infrastructure.Pipeline;
 
-public static class EfRegistration
+public static class SqlServerRegistration
 {
-    public static WebApplicationBuilder AddEf(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddSqlServerDatabase(this WebApplicationBuilder builder)
     {
         RegisterSqlServerModule.Register(builder.Services, builder.Configuration);
         

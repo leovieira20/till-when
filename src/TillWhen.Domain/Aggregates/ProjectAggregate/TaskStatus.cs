@@ -1,4 +1,4 @@
-﻿namespace TillWhen.Domain.Entities
+﻿namespace TillWhen.Domain.Aggregates.ProjectAggregate
 {
     public struct TaskStatus
     {

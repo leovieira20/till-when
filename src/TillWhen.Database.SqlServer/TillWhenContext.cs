@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using TillWhen.Domain.Entities;
+using TillWhen.Domain.Aggregates.ProjectAggregate;
 
 namespace TillWhen.Database.SqlServer;
 

@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TillWhen.Database.SqlServer.Repositories;
+using TillWhen.Domain.Aggregates.ProjectAggregate;
 
 namespace TillWhen.Database.SqlServer;
 
-public class RegisterSqlServerModule
+public static class RegisterSqlServerModule
 {
     public static void Register(IServiceCollection services, IConfiguration configuration)
     {
@@ -15,5 +17,7 @@ public class RegisterSqlServerModule
             {
                 x.UseSqlServer(connectionString);
             });
+
+        services.AddScoped<IProjectRepository, EfProjectRepository>();
     }
 }

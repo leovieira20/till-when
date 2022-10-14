@@ -1,10 +1,12 @@
+using FastEndpoints;
 using TillWhen.Api.Infrastructure.Pipeline;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder
     .AddSerilog()
-    .AddEf()
+    .AddSqlServerDatabase()
+    .AddApplicationServices()
     .AddControllers()
     .AddSwagger();
 
@@ -16,7 +18,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseAuthorization();
-app.MapControllers();
+app.UseFastEndpoints();
 app.UseWelcomePage();
 app.Run();
