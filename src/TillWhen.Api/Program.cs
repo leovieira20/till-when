@@ -1,12 +1,12 @@
-using TillWhen.Database.SqlServer;
+using TillWhen.Api.Infrastructure.Pipeline;
 
 var builder = WebApplication.CreateBuilder(args);
 
-RegisterSqlServerModule.Register(builder.Services, builder.Configuration);
-
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder
+    .AddSerilog()
+    .AddEf()
+    .AddControllers()
+    .AddSwagger();
 
 var app = builder.Build();
 
