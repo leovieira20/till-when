@@ -6,7 +6,7 @@ using TillWhen.Domain.Aggregates.ProjectAggregate;
 
 namespace TillWhen.Database.SqlServer;
 
-public static class RegisterSqlServerModule
+public static class SqlServerModule
 {
     public static void Register(IServiceCollection services, IConfiguration configuration)
     {
@@ -19,5 +19,12 @@ public static class RegisterSqlServerModule
             });
 
         services.AddScoped<IProjectRepository, EfProjectRepository>();
+    }
+
+    public static async Task MigrateDatabaseAsync(IServiceProvider services)
+    {
+        using var scope = services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<TillWhenContext>();
+        await context.Database.MigrateAsync();
     }
 }

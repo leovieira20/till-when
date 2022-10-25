@@ -1,5 +1,6 @@
 using FastEndpoints;
 using TillWhen.Api.Infrastructure.Pipeline;
+using TillWhen.Database.SqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    await SqlServerModule.MigrateDatabaseAsync(app.Services);
 }
 
 app.UseFastEndpoints();
