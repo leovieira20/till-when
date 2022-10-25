@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder
     .AddSerilog()
-    .AddSqlServerDatabase()
+    .AddSqlModule(builder.Configuration)
     .AddApplicationServices()
     .AddControllers()
     .AddSwagger();
@@ -17,7 +17,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    await SqlServerModule.MigrateDatabaseAsync(app.Services);
+    await app.MigrateDatabaseAsync();
 }
 
 app.UseFastEndpoints();

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,8 +9,10 @@ namespace TillWhen.Database.SqlServer;
 
 public static class SqlServerModule
 {
-    public static void Register(IServiceCollection services, IConfiguration configuration)
+    public static WebApplicationBuilder AddSqlModule(this WebApplicationBuilder builder, IConfiguration configuration)
     {
+        var services = builder.Services;
+        
         var connectionString = configuration.GetConnectionString("TillWhen");
 
         services
@@ -19,11 +22,13 @@ public static class SqlServerModule
             });
 
         services.AddScoped<IProjectRepository, EfProjectRepository>();
+
+        return builder;
     }
 
-    public static async Task MigrateDatabaseAsync(IServiceProvider services)
+    public static async Task MigrateDatabaseAsync(this WebApplication app)
     {
-        using var scope = services.CreateScope();
+        using var scope = app.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<TillWhenContext>();
         await context.Database.MigrateAsync();
     }

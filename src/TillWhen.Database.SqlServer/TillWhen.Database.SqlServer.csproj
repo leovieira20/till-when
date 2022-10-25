@@ -14,4 +14,10 @@
       <ProjectReference Include="..\TillWhen.Domain\TillWhen.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore">
+        <HintPath>..\..\..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\6.0.5\Microsoft.AspNetCore.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
