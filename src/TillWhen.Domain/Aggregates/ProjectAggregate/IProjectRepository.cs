@@ -1,10 +1,9 @@
 using System.Threading.Tasks;
 
-namespace TillWhen.Domain.Aggregates.ProjectAggregate
+namespace TillWhen.Domain.Aggregates.ProjectAggregate;
+
+public interface IProjectRepository
 {
-    public interface IProjectRepository
-    {
-        void Add(Project project);
-        Task CommitAsync();
-    }
+    void Add(Project project);
+    Task CommitAsync();
 }
