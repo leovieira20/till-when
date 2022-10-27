@@ -44,7 +44,10 @@ public class TillWhenApi : WebApplicationFactory<IApiMarker>, IAsyncLifetime
         {
             services.RemoveAll(typeof(DbContextOptions<TillWhenContext>));
             services
-                .AddDbContext<TillWhenContext>(x => { x.UseSqlServer(connectionString); });
+                .AddDbContext<TillWhenContext>(x =>
+                {
+                    x.UseSqlServer(connectionString);
+                });
         });
     }
 

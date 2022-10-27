@@ -22,18 +22,21 @@ namespace TillWhen.Database.SqlServer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("TillWhen.Domain.Entities.Project", b =>
+            modelBuilder.Entity("TillWhen.Domain.Aggregates.ProjectAggregate.Project", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("TillWhen.Domain.Entities.Task", b =>
+            modelBuilder.Entity("TillWhen.Domain.Aggregates.ProjectAggregate.ProjectTask", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -52,17 +55,44 @@ namespace TillWhen.Database.SqlServer.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Task");
+                    b.ToTable("ProjectTask");
                 });
 
-            modelBuilder.Entity("TillWhen.Domain.Entities.Task", b =>
+            modelBuilder.Entity("TillWhen.Domain.Aggregates.ProjectAggregate.Project", b =>
                 {
-                    b.HasOne("TillWhen.Domain.Entities.Project", null)
+                    b.OwnsOne("TillWhen.Domain.Common.Duration", "Duration", b1 =>
+                        {
+                            b1.Property<Guid>("ProjectId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("Days")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Hours")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Minutes")
+                                .HasColumnType("int");
+
+                            b1.HasKey("ProjectId");
+
+                            b1.ToTable("Projects");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProjectId");
+                        });
+
+                    b.Navigation("Duration");
+                });
+
+            modelBuilder.Entity("TillWhen.Domain.Aggregates.ProjectAggregate.ProjectTask", b =>
+                {
+                    b.HasOne("TillWhen.Domain.Aggregates.ProjectAggregate.Project", null)
                         .WithMany("PendingTasks")
                         .HasForeignKey("ProjectId");
                 });
 
-            modelBuilder.Entity("TillWhen.Domain.Entities.Project", b =>
+            modelBuilder.Entity("TillWhen.Domain.Aggregates.ProjectAggregate.Project", b =>
                 {
                     b.Navigation("PendingTasks");
                 });

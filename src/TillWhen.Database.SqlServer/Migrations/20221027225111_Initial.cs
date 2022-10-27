@@ -13,7 +13,11 @@ namespace TillWhen.Database.SqlServer.Migrations
                 name: "Projects",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Duration_Minutes = table.Column<int>(type: "int", nullable: true),
+                    Duration_Hours = table.Column<int>(type: "int", nullable: true),
+                    Duration_Days = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -21,7 +25,7 @@ namespace TillWhen.Database.SqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Task",
+                name: "ProjectTask",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -31,24 +35,24 @@ namespace TillWhen.Database.SqlServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Task", x => x.Id);
+                    table.PrimaryKey("PK_ProjectTask", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Task_Projects_ProjectId",
+                        name: "FK_ProjectTask_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Task_ProjectId",
-                table: "Task",
+                name: "IX_ProjectTask_ProjectId",
+                table: "ProjectTask",
                 column: "ProjectId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Task");
+                name: "ProjectTask");
 
             migrationBuilder.DropTable(
                 name: "Projects");

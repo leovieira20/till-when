@@ -5,7 +5,7 @@ using TillWhen.Application.Projects;
 
 namespace TillWhen.Api.Endpoints.Projects.Create;
 
-public class CreateProjectEndpoint : Endpoint<CreateProjectRequest>
+public class CreateProjectEndpoint : Endpoint<CreateProjectRequest, CreateProjectResponse, CreateProjectCommandMapper>
 {
     private readonly IMediator _mediator;
 
@@ -22,7 +22,7 @@ public class CreateProjectEndpoint : Endpoint<CreateProjectRequest>
 
     public override async Task HandleAsync(CreateProjectRequest req, CancellationToken ct)
     {
-        var response = await _mediator.Send(new CreateProject.Command(), ct);
+        var response = await _mediator.Send(Map.ToEntity(req), ct);
 
         await SendCreatedAtAsync(
             GetProjectByIdEndpoint.Name,

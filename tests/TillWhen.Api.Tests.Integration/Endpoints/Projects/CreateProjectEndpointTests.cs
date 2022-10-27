@@ -17,15 +17,25 @@ public class CreateProjectEndpointTests : IClassFixture<TillWhenApi>
     [Fact]
     public async Task CanCreateProject()
     {
-        var response = await _client.PostAsync("api/projects", null);
+        var title = Guid.NewGuid().ToString();
+        var response = await _client.PostAsJsonAsync("api/projects", new
+        {
+            Title = title,
+            Duration = "1d 2h 3m"
+        });
         
         response.StatusCode.Should().Be(HttpStatusCode.Created);
         
-        var location = response.Headers.Location;
+        var createdProject = await _client.GetFromJsonAsync<JsonObject>(response.Headers.Location);
         
-        var createdProject = await _client.GetFromJsonAsync<JsonObject>(location);
+        var project = createdProject!["project"]!.AsObject();
+
+        project["id"].Should().NotBeNull();
+        project["Title"]!.GetValue<string>().Should().Be(title);
         
-        var project = createdProject!["project"]!;
-        project.AsObject()["id"].Should().NotBeNull();
+        var jsonDuration = project["Duration"] as JsonObject;
+        jsonDuration!["Days"]!.GetValue<int>().Should().Be(1);
+        jsonDuration["Hours"]!.GetValue<int>().Should().Be(2);
+        jsonDuration["Minutes"]!.GetValue<int>().Should().Be(3);
     }
 }

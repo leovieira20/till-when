@@ -4,6 +4,7 @@ namespace TillWhen.Domain.Common;
 
 public record Duration
 {
+    private Duration() { }
     public Duration(string value)
     {
         var minutesMatch = Regex.Match(value, @"\d+m");
@@ -28,7 +29,7 @@ public record Duration
         }
     }
 
-    public int Minutes { get; }
-    public int Hours { get; }
-    public int Days { get; }
+    public int Minutes { get; private set; }
+    public int Hours { get; private set; }
+    public int Days { get; private set; }
 }

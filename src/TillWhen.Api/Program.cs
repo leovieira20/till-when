@@ -20,6 +20,9 @@ if (app.Environment.IsDevelopment())
     await app.MigrateDatabaseAsync();
 }
 
-app.UseFastEndpoints();
+app.UseFastEndpoints(config =>
+{
+    
+});
 app.UseWelcomePage();
 app.Run();

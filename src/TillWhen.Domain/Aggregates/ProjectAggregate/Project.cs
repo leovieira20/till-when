@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TillWhen.Domain.Common;
 
 namespace TillWhen.Domain.Aggregates.ProjectAggregate;
 
@@ -13,6 +14,16 @@ public class Project
     {
         return new();
     }
+    
+    public static Project Create(string title, Duration duration)
+    {
+        return new()
+        {
+            Title = title,
+            Duration = duration
+        };
+    }
+    
 
     public static Project WithStartingDate(DateTime startingDate)
     {
@@ -112,7 +123,9 @@ public class Project
     }
 
     public Guid Id { get; set; }
+    private DateTime StartingDate { get; init; }
+    public string Title { get; private set; }
+    public Duration Duration { get; private set; }
     public List<ProjectTask> PendingTasks => Tasks.Where(x => x.Status != TaskStatus.Completed).ToList();
     private List<ProjectTask> Tasks { get; }
-    private DateTime StartingDate { get; init; }
 }

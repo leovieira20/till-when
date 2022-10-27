@@ -10,7 +10,9 @@ public class GetProjectByIdMapper : IMapper
     {
         return new()
         {
-            Id = project.Id
+            Id = project.Id,
+            Title = project.Title,
+            Duration = project.Duration,
         };
     }
 }
