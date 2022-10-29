@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TillWhen.Database.SqlServer.Repositories;
 using TillWhen.Domain.Aggregates.ProjectAggregate;
+using TillWhen.Domain.Aggregates.QueueAggregate;
 
 namespace TillWhen.Database.SqlServer;
 
@@ -22,6 +23,7 @@ public static class SqlServerModule
             });
 
         services.AddScoped<IProjectRepository, EfProjectRepository>();
+        services.AddScoped<ITaskQueueRepository, EfTaskQueueRepository>();
 
         return builder;
     }

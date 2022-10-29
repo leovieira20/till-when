@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TillWhen.Application", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TillWhen.Application.Acceptance", "tests\TillWhen.Application.Acceptance\TillWhen.Application.Acceptance.csproj", "{555DC1A6-FEFD-4CA0-AF30-0B8B078182BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TillWhen.Helpers.DataSeed", "src\TillWhen.Helpers.DataSeed\TillWhen.Helpers.DataSeed.csproj", "{7352FF07-B7A5-4E6C-8AF1-03D3E4C9306A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{555DC1A6-FEFD-4CA0-AF30-0B8B078182BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{555DC1A6-FEFD-4CA0-AF30-0B8B078182BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{555DC1A6-FEFD-4CA0-AF30-0B8B078182BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7352FF07-B7A5-4E6C-8AF1-03D3E4C9306A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7352FF07-B7A5-4E6C-8AF1-03D3E4C9306A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7352FF07-B7A5-4E6C-8AF1-03D3E4C9306A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7352FF07-B7A5-4E6C-8AF1-03D3E4C9306A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F64C0875-E74B-49DF-861F-E27C81B7FB9A} = {866563FA-E651-4E73-9106-896ADD5AEC0D}
@@ -61,5 +67,6 @@ Global
 		{96F2DEB5-B87F-4851-8387-E5097B794E49} = {E1245818-F02C-4AA4-B6E5-832BD7099E05}
 		{7852C77B-9152-40CE-B9F6-086970DC7894} = {866563FA-E651-4E73-9106-896ADD5AEC0D}
 		{555DC1A6-FEFD-4CA0-AF30-0B8B078182BC} = {E1245818-F02C-4AA4-B6E5-832BD7099E05}
+		{7352FF07-B7A5-4E6C-8AF1-03D3E4C9306A} = {866563FA-E651-4E73-9106-896ADD5AEC0D}
 	EndGlobalSection
 EndGlobal

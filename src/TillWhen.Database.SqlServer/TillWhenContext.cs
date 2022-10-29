@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TillWhen.Domain.Aggregates.ProjectAggregate;
+using TillWhen.Domain.Aggregates.QueueAggregate;
 using TillWhen.Domain.Common;
 
 namespace TillWhen.Database.SqlServer;
@@ -18,8 +19,19 @@ public class TillWhenContext : DbContext
     {
         modelBuilder
             .Entity<Project>()
+            .Property(x => x.Title)
+            .HasMaxLength(200);
+        
+        modelBuilder
+            .Entity<Project>()
+            .Property(x => x.Category)
+            .HasMaxLength(100);
+        
+        modelBuilder
+            .Entity<Project>()
             .OwnsOne(x => x.Duration);
     }
 
     public DbSet<Project> Projects { get; set; }
+    public DbSet<TaskQueue> TaskQueues { get; set; }
 }

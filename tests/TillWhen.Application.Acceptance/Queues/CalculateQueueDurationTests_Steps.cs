@@ -13,11 +13,11 @@ public partial class CalculateQueueDurationTests : FeatureFixture
 {
     private readonly CalculateQueueDuration.Handler _sut;
     private CalculateQueueDuration.Response _result = null!;
-    private readonly IQueueRepository _queueRepository;
+    private readonly ITaskQueueRepository _queueRepository;
 
     public CalculateQueueDurationTests()
     {
-        _queueRepository = Substitute.For<IQueueRepository>();
+        _queueRepository = Substitute.For<ITaskQueueRepository>();
         _sut = new(_queueRepository);
     }
     

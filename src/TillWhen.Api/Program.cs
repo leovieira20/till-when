@@ -1,5 +1,6 @@
 using FastEndpoints;
 using TillWhen.Api.Infrastructure.Pipeline;
+using TillWhen.Application;
 using TillWhen.Database.SqlServer;
 
 var builder = WebApplication.CreateBuilder(args);

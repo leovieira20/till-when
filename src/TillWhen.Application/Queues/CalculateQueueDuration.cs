@@ -8,9 +8,9 @@ public static class CalculateQueueDuration
 {
     public class Handler : IRequestHandler<Query, Response>
     {
-        private readonly IQueueRepository _repository;
+        private readonly ITaskQueueRepository _repository;
 
-        public Handler(IQueueRepository repository)
+        public Handler(ITaskQueueRepository repository)
         {
             _repository = repository;
         }

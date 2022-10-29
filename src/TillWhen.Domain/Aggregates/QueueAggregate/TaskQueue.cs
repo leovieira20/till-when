@@ -47,5 +47,6 @@ public class TaskQueue
         return QueueDay.WithTasks(tasks.ToList());
     }
 
-    private List<Project> Projects { get; init; }
+    public Guid Id { get; set; }
+    public List<Project> Projects { get; private set; }
 }

@@ -28,10 +28,22 @@ namespace TillWhen.Database.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid>("TaskQueueId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TaskQueueId");
 
                     b.ToTable("Projects");
                 });
@@ -49,6 +61,7 @@ namespace TillWhen.Database.SqlServer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -58,8 +71,25 @@ namespace TillWhen.Database.SqlServer.Migrations
                     b.ToTable("ProjectTask");
                 });
 
+            modelBuilder.Entity("TillWhen.Domain.Aggregates.QueueAggregate.TaskQueue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TaskQueues");
+                });
+
             modelBuilder.Entity("TillWhen.Domain.Aggregates.ProjectAggregate.Project", b =>
                 {
+                    b.HasOne("TillWhen.Domain.Aggregates.QueueAggregate.TaskQueue", null)
+                        .WithMany("Projects")
+                        .HasForeignKey("TaskQueueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("TillWhen.Domain.Common.Duration", "Duration", b1 =>
                         {
                             b1.Property<Guid>("ProjectId")
@@ -82,7 +112,8 @@ namespace TillWhen.Database.SqlServer.Migrations
                                 .HasForeignKey("ProjectId");
                         });
 
-                    b.Navigation("Duration");
+                    b.Navigation("Duration")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TillWhen.Domain.Aggregates.ProjectAggregate.ProjectTask", b =>
@@ -95,6 +126,11 @@ namespace TillWhen.Database.SqlServer.Migrations
             modelBuilder.Entity("TillWhen.Domain.Aggregates.ProjectAggregate.Project", b =>
                 {
                     b.Navigation("PendingTasks");
+                });
+
+            modelBuilder.Entity("TillWhen.Domain.Aggregates.QueueAggregate.TaskQueue", b =>
+                {
+                    b.Navigation("Projects");
                 });
 #pragma warning restore 612, 618
         }
