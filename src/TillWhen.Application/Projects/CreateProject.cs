@@ -26,11 +26,7 @@ public static class CreateProject
         }
     }
 
-    public record Command : IRequest<Response>
-    {
-        public string Title { get; set; }
-        public Duration Duration { get; set; }
-    }
+    public record Command(string Title, Duration Duration) : IRequest<Response>;
 
     public record Response(Guid Id, Duration Duration);
 }

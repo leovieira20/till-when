@@ -1,7 +1,6 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ee800616_002D7835_002D4ace_002Dad2d_002D3ecc4007e2a7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="CanCreateProject" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::96F2DEB5-B87F-4851-8387-E5097B794E49::net6.0::TillWhen.Api.Tests.Integration.Endpoints.Projects.CreateProjectEndpointTests.CanCreateProject&lt;/TestId&gt;
-  &lt;/TestAncestor&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=205e1a2a_002D0866_002D430b_002D87df_002D6a4940374a47/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="1" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Not&gt;
+    &lt;Project Location="/Users/leo/Dev/dreamsparser/TillWhen/dotnet/tests/TillWhen.Api.Tests.Integration" Presentation="&amp;lt;tests&amp;gt;\&amp;lt;TillWhen.Api.Tests.Integration&amp;gt;" /&gt;
+  &lt;/Not&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

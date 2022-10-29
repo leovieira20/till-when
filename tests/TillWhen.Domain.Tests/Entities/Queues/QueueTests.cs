@@ -51,7 +51,7 @@ public class QueueTests
     private void GivenQueueWithOnProjectAndOnePendingTask()
     {
         var project = ProjectEntity.Create();
-        project.AddTask(new ProjectTask(new (), TimeSpan.FromHours(1)));
+        project.AddTask(new(new (), TimeSpan.FromHours(1)));
 
         var projects = new List<ProjectEntity>
         {
@@ -65,8 +65,8 @@ public class QueueTests
     {
         var project = ProjectEntity.WithQuota(TimeSpan.FromHours(4));
 
-        project.AddTask(new ProjectTask(new(), TimeSpan.FromHours(4)));
-        project.AddTask(new ProjectTask(new(), TimeSpan.FromHours(4)));
+        project.AddTask(new(new(), TimeSpan.FromHours(4)));
+        project.AddTask(new(new(), TimeSpan.FromHours(4)));
 
         var projects = new List<ProjectEntity>
         {

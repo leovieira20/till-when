@@ -5,7 +5,13 @@ namespace TillWhen.Domain.Common;
 public record Duration
 {
     private Duration() { }
-    public Duration(string value)
+
+    public static Duration Create(string value)
+    {
+        return new(value);
+    }
+    
+    private Duration(string value)
     {
         var minutesMatch = Regex.Match(value, @"\d+m");
         if (minutesMatch.Success && !string.IsNullOrWhiteSpace(minutesMatch.Value))

@@ -8,10 +8,6 @@ public class CreateProjectCommandMapper : Mapper<CreateProjectRequest, CreatePro
 {
     public override CreateProject.Command ToEntity(CreateProjectRequest r)
     {
-        return new()
-        {
-            Title = r.Title,
-            Duration = new Duration(r.Duration)
-        };
+        return new(r.Title, Duration.Create(r.Duration));
     }
 }
