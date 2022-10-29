@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using FluentAssertions;
 using TestStack.BDDfy;
 using TillWhen.Domain.Aggregates.ProjectAggregate;
+using TillWhen.Domain.Aggregates.QueueAggregate;
 using Xunit;
-using ProjectEntity = TillWhen.Domain.Aggregates.ProjectAggregate.Project;
 
 namespace TillWhen.Domain.Tests.Entities.Queues;
 
@@ -50,10 +49,10 @@ public class QueueTests
 
     private void GivenQueueWithOnProjectAndOnePendingTask()
     {
-        var project = ProjectEntity.Create();
+        var project = Project.Create();
         project.AddTask(new(new (), TimeSpan.FromHours(1)));
 
-        var projects = new List<ProjectEntity>
+        var projects = new List<Project>
         {
             project
         };
@@ -63,12 +62,12 @@ public class QueueTests
 
     private void GivenQueueWithOnProjectAndTwoTasksDueInDifferentDays()
     {
-        var project = ProjectEntity.WithQuota(TimeSpan.FromHours(4));
+        var project = Project.WithQuota(TimeSpan.FromHours(4));
 
         project.AddTask(new(new(), TimeSpan.FromHours(4)));
         project.AddTask(new(new(), TimeSpan.FromHours(4)));
 
-        var projects = new List<ProjectEntity>
+        var projects = new List<Project>
         {
             project
         };
@@ -90,57 +89,4 @@ public class QueueTests
     {
         _daySlot.Tasks.Should().BeEmpty();
     }
-}
-
-public class TaskQueue
-{
-    private TaskQueue()
-    {
-        Projects = new();
-    }
-
-    public static TaskQueue WithProjects(List<ProjectEntity> projects)
-    {
-        return new()
-        {
-            Projects = projects
-        };
-    }
-
-    public QueueDay GetTasksForDate(DateTime date)
-    {
-        if (!Projects.Any())
-        {
-            return QueueDay.Default();
-        }
-
-        var tasks = Projects.SelectMany(x => x.GetTasksForDate(date));
-
-        return QueueDay.WithTasks(tasks.ToList());
-    }
-
-    private List<ProjectEntity> Projects { get; init; }
-}
-
-public class QueueDay
-{
-    public static QueueDay Default()
-    {
-        return new();
-    }
-
-    private QueueDay()
-    {
-        Tasks = new();
-    }
-
-    public static QueueDay WithTasks(List<ProjectTask> tasks)
-    {
-        return new()
-        {
-            Tasks = tasks
-        };
-    }
-
-    public List<ProjectTask> Tasks { get; private init; }
 }

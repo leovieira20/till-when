@@ -54,6 +54,18 @@ public class DurationTests
         duration.Minutes.Should().Be(3);
     }
 
+    [Fact]
+    public void ShouldSumDurations()
+    {
+        var oneHour = Duration.Create("1h");
+        var oneDay = Duration.Create("1d");
+        
+        var total = oneHour + oneDay;
+
+        total.Hours.Should().Be(1);
+        total.Days.Should().Be(1);
+    }
+
     public static IEnumerable<object[]> Values()
     {
         return new List<object[]>

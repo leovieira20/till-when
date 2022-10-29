@@ -6,6 +6,7 @@ public record Duration
 {
     private Duration() { }
 
+    public static Duration Empty() => new();
     public static Duration Create(string value)
     {
         return new(value);
@@ -34,6 +35,16 @@ public record Duration
             Days = int.Parse(days);
         }
     }
+    
+    public static Duration operator +(Duration left, Duration right)
+    {
+        return new Duration
+        {
+            Minutes = left.Minutes + right.Minutes,
+            Hours = left.Hours + right.Hours,
+            Days = left.Days + right.Days
+        };
+    }     
 
     public int Minutes { get; private set; }
     public int Hours { get; private set; }

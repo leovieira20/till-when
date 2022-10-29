@@ -26,7 +26,7 @@ public class CreateProjectEndpoint : Endpoint<CreateProjectRequest, CreateProjec
 
         await SendCreatedAtAsync(
             GetProjectByIdEndpoint.Name,
-            new { Id = response.Id },
+            new { response.Id },
             new(response.Id),
             cancellation: ct);
     }

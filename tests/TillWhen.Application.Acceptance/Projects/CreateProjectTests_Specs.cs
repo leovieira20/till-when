@@ -8,12 +8,18 @@ namespace TillWhen.Application.Acceptance.Projects;
 public partial class CreateProjectTests
 {
     [Scenario]
-    public void ValidProject()
+    public async Task ValidProject()
     {
-        Runner.RunScenario(
-            _ => GivenValidProjectSpecs(),
-            _ => WhenActionIsExecuted(),
-            _ => ThenProjectIsCreated()
-        );
+        await Runner
+            .AddSteps(
+                _ => GivenValidProjectSpecs()
+            )
+            .AddAsyncSteps(
+                _ => WhenActionIsExecuted()
+            )
+            .AddSteps(
+                _ => ThenProjectIsCreated()
+            )
+            .RunAsync();
     }
 }
