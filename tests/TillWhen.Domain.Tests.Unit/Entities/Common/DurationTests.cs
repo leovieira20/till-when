@@ -3,7 +3,7 @@ using FluentAssertions;
 using TillWhen.Domain.Common;
 using Xunit;
 
-namespace TillWhen.Domain.Tests.Entities.Common;
+namespace TillWhen.Domain.Tests.Unit.Entities.Common;
 
 public class DurationTests
 {
@@ -54,6 +54,18 @@ public class DurationTests
         duration.Minutes.Should().Be(3);
     }
 
+    [Theory]
+    [InlineData("61m", 0, 1, 1)]
+    [InlineData("25h", 1, 1, 0)]
+    public void ShouldDetectOverflow(string value, int days, int hours, int minutes)
+    {
+        var duration = Duration.Create(value);
+
+        duration.Days.Should().Be(days);
+        duration.Hours.Should().Be(hours);
+        duration.Minutes.Should().Be(minutes);
+    }
+    
     [Fact]
     public void ShouldSumDurations()
     {
@@ -65,14 +77,34 @@ public class DurationTests
         total.Hours.Should().Be(1);
         total.Days.Should().Be(1);
     }
+    
+    [Fact]
+    public void ShouldDetectOverflowWhenSumming()
+    {
+        var first = new Duration
+        {
+            Hours = 23,
+            Minutes = 59
+        };
+
+        var second = new Duration
+        {
+            Minutes = 1
+        };
+
+        var total = first + second;
+
+        total.Days.Should().Be(1);
+        total.Hours.Should().Be(0);
+        total.Minutes.Should().Be(0);
+    }
 
     public static IEnumerable<object[]> Values()
     {
         return new List<object[]>
         {
             new object[] { 1 },
-            new object[] { 10 },
-            new object[] { 100 }
+            new object[] { 10 }
         };
     }
 }

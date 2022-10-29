@@ -5,7 +5,7 @@ using TillWhen.Application.Projects;
 using TillWhen.Domain.Aggregates.ProjectAggregate;
 using TillWhen.Domain.Common;
 
-namespace TillWhen.Application.Acceptance.Projects;
+namespace TillWhen.Application.Tests.Acceptance.Projects;
 
 public partial class CreateProjectTests : FeatureFixture
 {

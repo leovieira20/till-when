@@ -17,6 +17,7 @@ public class EfTaskQueueRepository : ITaskQueueRepository
         return _context
             .TaskQueues
             .Include(x => x.Projects)
+            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == requestQueueId);
     }
 

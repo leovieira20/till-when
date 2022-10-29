@@ -1,52 +1,63 @@
+using System;
 using System.Text.RegularExpressions;
 
 namespace TillWhen.Domain.Common;
 
 public record Duration
 {
-    private Duration() { }
-
     public static Duration Empty() => new();
-    public static Duration Create(string value)
-    {
-        return new(value);
-    }
-    
+    public static Duration Create(string value) => new(value);
+
+    internal Duration() { }
     private Duration(string value)
     {
+        var timespan = TimeSpan.Zero;
+        
         var minutesMatch = Regex.Match(value, @"\d+m");
         if (minutesMatch.Success && !string.IsNullOrWhiteSpace(minutesMatch.Value))
         {
             var minutes = minutesMatch.Value.Replace("m", string.Empty);
-            Minutes = int.Parse(minutes);
+            timespan = timespan.Add(TimeSpan.FromMinutes(int.Parse(minutes)));
         }
         
         var hoursMatch = Regex.Match(value, @"\d+h");
         if (hoursMatch.Success && !string.IsNullOrWhiteSpace(hoursMatch.Value))
         {
             var hours = hoursMatch.Value.Replace("h", string.Empty);
-            Hours = int.Parse(hours);
+            timespan = timespan.Add(TimeSpan.FromHours(int.Parse(hours)));
         }
         
         var daysMatch = Regex.Match(value, @"\d+d");
         if (daysMatch.Success && !string.IsNullOrWhiteSpace(daysMatch.Value))
         {
             var days = daysMatch.Value.Replace("d", string.Empty);
-            Days = int.Parse(days);
+            timespan = timespan.Add(TimeSpan.FromDays(int.Parse(days)));
         }
+
+        Days = timespan.Days;
+        Hours = timespan.Hours;
+        Minutes = timespan.Minutes;
     }
     
     public static Duration operator +(Duration left, Duration right)
     {
+        var minutes = left.Minutes + right.Minutes;
+        var hours = left.Hours + right.Hours;
+        var days = left.Days + right.Days;
+
+        var timespan = TimeSpan.FromMinutes(minutes)
+            .Add(TimeSpan.FromHours(hours))
+            .Add(TimeSpan.FromDays(days));
+        
         return new Duration
         {
-            Minutes = left.Minutes + right.Minutes,
-            Hours = left.Hours + right.Hours,
-            Days = left.Days + right.Days
+            Minutes = timespan.Minutes,
+            Hours = timespan.Hours,
+            Days = timespan.Days
         };
     }     
 
-    public int Minutes { get; private set; }
-    public int Hours { get; private set; }
-    public int Days { get; private set; }
+    public int Minutes { get; internal set; }
+    public int Hours { get; internal set; }
+    public int Days { get; internal set; }
 }

@@ -7,7 +7,7 @@ using TillWhen.Domain.Aggregates.ProjectAggregate;
 using TillWhen.Domain.Aggregates.QueueAggregate;
 using TillWhen.Domain.Common;
 
-namespace TillWhen.Application.Acceptance.Queues;
+namespace TillWhen.Application.Tests.Acceptance.Queues;
 
 public partial class CalculateQueueDurationTests : FeatureFixture
 {

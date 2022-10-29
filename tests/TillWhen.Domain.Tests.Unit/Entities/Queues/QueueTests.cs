@@ -6,7 +6,7 @@ using TillWhen.Domain.Aggregates.ProjectAggregate;
 using TillWhen.Domain.Aggregates.QueueAggregate;
 using Xunit;
 
-namespace TillWhen.Domain.Tests.Entities.Queues;
+namespace TillWhen.Domain.Tests.Unit.Entities.Queues;
 
 public class QueueTests
 {

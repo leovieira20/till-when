@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TillWhen.Domain", "src\TillWhen.Domain\TillWhen.Domain.csproj", "{F64C0875-E74B-49DF-861F-E27C81B7FB9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TillWhen.Domain.Tests", "tests\TillWhen.Domain.Tests\TillWhen.Domain.Tests.csproj", "{39D45757-68B2-49F2-80C8-0D6C6E022C1E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TillWhen.Domain.Tests.Unit", "tests\TillWhen.Domain.Tests.Unit\TillWhen.Domain.Tests.Unit.csproj", "{39D45757-68B2-49F2-80C8-0D6C6E022C1E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{866563FA-E651-4E73-9106-896ADD5AEC0D}"
 EndProject
@@ -16,7 +16,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TillWhen.Api.Tests.Integrat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TillWhen.Application", "src\TillWhen.Application\TillWhen.Application.csproj", "{7852C77B-9152-40CE-B9F6-086970DC7894}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TillWhen.Application.Acceptance", "tests\TillWhen.Application.Acceptance\TillWhen.Application.Acceptance.csproj", "{555DC1A6-FEFD-4CA0-AF30-0B8B078182BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TillWhen.Application.Tests.Acceptance", "tests\TillWhen.Application.Tests.Acceptance\TillWhen.Application.Tests.Acceptance.csproj", "{555DC1A6-FEFD-4CA0-AF30-0B8B078182BC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TillWhen.Helpers.DataSeed", "src\TillWhen.Helpers.DataSeed\TillWhen.Helpers.DataSeed.csproj", "{7352FF07-B7A5-4E6C-8AF1-03D3E4C9306A}"
 EndProject
