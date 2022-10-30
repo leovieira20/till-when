@@ -18,6 +18,10 @@ public static class CalculateQueueDuration
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
             var queue = await _repository.GetAsync(request.QueueId);
+            if (queue == null)
+            {
+                return new(Duration.Empty());
+            }
             
             var duration = queue.CalculateDuration();
 

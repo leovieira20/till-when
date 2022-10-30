@@ -2,6 +2,7 @@ using FluentAssertions;
 using LightBDD.Framework.Parameters;
 using LightBDD.XUnit2;
 using NSubstitute;
+using NSubstitute.ReturnsExtensions;
 using TillWhen.Application.Queues;
 using TillWhen.Domain.Aggregates.ProjectAggregate;
 using TillWhen.Domain.Aggregates.QueueAggregate;
@@ -19,6 +20,14 @@ public partial class CalculateQueueDurationTests : FeatureFixture
     {
         _queueRepository = Substitute.For<ITaskQueueRepository>();
         _sut = new(_queueRepository);
+    }
+    
+    private void GivenAnInexistentQueue()
+    {
+        _queueRepository
+            .GetAsync(Arg.Any<Guid>())
+            .ReturnsNullForAnyArgs();
+
     }
     
     private void GivenAQueueWithNoProjects()

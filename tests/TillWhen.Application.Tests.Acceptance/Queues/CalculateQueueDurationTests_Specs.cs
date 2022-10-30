@@ -11,6 +11,17 @@ namespace TillWhen.Application.Tests.Acceptance.Queues;
 public partial class CalculateQueueDurationTests
 {
     [Scenario]
+    public async Task DurationForAnInexistentQueue()
+    {
+        await Runner
+            .AddSteps(
+                _ => GivenAnInexistentQueue())
+            .AddAsyncSteps(_ => WhenTheActionIsExecuted())
+            .AddSteps(_ => TheDurationShouldBe(Duration.Empty()))
+            .RunAsync();
+    }
+    
+    [Scenario]
     public async Task DurationForAnEmptyQueue()
     {
         await Runner
