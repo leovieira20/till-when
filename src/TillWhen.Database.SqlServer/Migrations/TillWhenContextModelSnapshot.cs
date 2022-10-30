@@ -104,6 +104,12 @@ namespace TillWhen.Database.SqlServer.Migrations
                             b1.Property<int>("Minutes")
                                 .HasColumnType("int");
 
+                            b1.Property<int>("Tomatoes")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("TotalHours")
+                                .HasColumnType("int");
+
                             b1.HasKey("ProjectId");
 
                             b1.ToTable("Projects");

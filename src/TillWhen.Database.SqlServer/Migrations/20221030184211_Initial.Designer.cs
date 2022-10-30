@@ -12,7 +12,7 @@ using TillWhen.Database.SqlServer;
 namespace TillWhen.Database.SqlServer.Migrations
 {
     [DbContext(typeof(TillWhenContext))]
-    [Migration("20221029210623_Initial")]
+    [Migration("20221030184211_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -104,6 +104,12 @@ namespace TillWhen.Database.SqlServer.Migrations
                                 .HasColumnType("int");
 
                             b1.Property<int>("Minutes")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Tomatoes")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("TotalHours")
                                 .HasColumnType("int");
 
                             b1.HasKey("ProjectId");

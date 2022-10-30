@@ -37,6 +37,8 @@ public record Duration
         Days = timespan.Days;
         Hours = timespan.Hours;
         Minutes = timespan.Minutes;
+        TotalHours = (int)timespan.TotalHours;
+        Tomatoes = (int)(timespan.TotalMinutes / 25);
     }
     
     public static Duration operator +(Duration left, Duration right)
@@ -49,15 +51,19 @@ public record Duration
             .Add(TimeSpan.FromHours(hours))
             .Add(TimeSpan.FromDays(days));
         
-        return new Duration
+        return new()
         {
             Minutes = timespan.Minutes,
             Hours = timespan.Hours,
-            Days = timespan.Days
+            Days = timespan.Days,
+            TotalHours = (int)timespan.TotalHours,
+            Tomatoes = (int)(timespan.TotalMinutes / 25)
         };
     }     
 
     public int Minutes { get; internal set; }
     public int Hours { get; internal set; }
     public int Days { get; internal set; }
+    public int TotalHours { get; private set; }
+    public int Tomatoes { get; private set; }
 }

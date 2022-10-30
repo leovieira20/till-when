@@ -30,6 +30,8 @@ namespace TillWhen.Database.SqlServer.Migrations
                     Duration_Minutes = table.Column<int>(type: "int", nullable: false),
                     Duration_Hours = table.Column<int>(type: "int", nullable: false),
                     Duration_Days = table.Column<int>(type: "int", nullable: false),
+                    Duration_TotalHours = table.Column<int>(type: "int", nullable: false),
+                    Duration_Tomatoes = table.Column<int>(type: "int", nullable: false),
                     TaskQueueId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>

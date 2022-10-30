@@ -42,11 +42,8 @@ public partial class CalculateQueueDurationTests : FeatureFixture
 
     private void TheDurationShouldBe(Duration duration)
     {
-        _result.Duration.Should().BeEquivalentTo(new
-        {
-            duration.Days,
-            duration.Hours,
-            duration.Minutes
-        });
+        _result.Duration.Days.Should().Be(duration.Days);
+        _result.Duration.Hours.Should().Be(duration.Hours);
+        _result.Duration.Minutes.Should().Be(duration.Minutes);
     }
 }

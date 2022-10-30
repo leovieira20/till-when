@@ -15,6 +15,7 @@ public class DurationTests
         duration.Minutes.Should().Be(0);
         duration.Hours.Should().Be(0);
         duration.Days.Should().Be(0);
+        duration.Tomatoes.Should().Be(0);
     }
     
     [Theory]
@@ -36,12 +37,13 @@ public class DurationTests
     }
     
     [Theory]
-    [MemberData(nameof(Values))]
-    public void ShouldConvertDays(int days)
+    [InlineData(1, 24)]
+    public void ShouldConvertDays(int days, int totalHours)
     {
         var duration = Duration.Create($"{days}d");
 
         duration.Days.Should().Be(days);
+        duration.TotalHours.Should().Be(totalHours);
     }
 
     [Fact]
@@ -52,6 +54,7 @@ public class DurationTests
         duration.Days.Should().Be(1);
         duration.Hours.Should().Be(2);
         duration.Minutes.Should().Be(3);
+        duration.TotalHours.Should().Be(26);
     }
 
     [Theory]
@@ -76,6 +79,8 @@ public class DurationTests
 
         total.Hours.Should().Be(1);
         total.Days.Should().Be(1);
+        total.TotalHours.Should().Be(25);
+        total.Tomatoes.Should().Be(60);
     }
     
     [Fact]
@@ -97,6 +102,16 @@ public class DurationTests
         total.Days.Should().Be(1);
         total.Hours.Should().Be(0);
         total.Minutes.Should().Be(0);
+    }
+    
+    [Theory]
+    [InlineData("25m", 1)]
+    [InlineData("1h", 2)]
+    public void ShouldConvertToTomatoes(string format, int tomatoes)
+    {
+        var duration = Duration.Create(format);
+
+        duration.Tomatoes.Should().Be(tomatoes);
     }
 
     public static IEnumerable<object[]> Values()
