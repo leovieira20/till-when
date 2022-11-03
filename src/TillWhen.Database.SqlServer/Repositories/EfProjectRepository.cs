@@ -15,7 +15,7 @@ internal class EfProjectRepository : IProjectRepository
     {
         _context.Projects.Add(project);
     }
-
+    
     public Task CommitAsync()
     {
         return _context.SaveChangesAsync();

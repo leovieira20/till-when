@@ -3,17 +3,16 @@ using LightBDD.Framework.Parameters;
 using LightBDD.XUnit2;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
-using TillWhen.Application.Queues;
 using TillWhen.Domain.Aggregates.ProjectAggregate;
 using TillWhen.Domain.Aggregates.QueueAggregate;
 using TillWhen.Domain.Common;
 
-namespace TillWhen.Application.Tests.Acceptance.Queues;
+namespace TillWhen.Application.Tests.Acceptance.Queues.CalculateQueueDurationSpecs;
 
 public partial class CalculateQueueDurationTests : FeatureFixture
 {
-    private readonly CalculateQueueDuration.Handler _sut;
-    private CalculateQueueDuration.Response _result = null!;
+    private readonly Application.Queues.CalculateQueueDuration.Handler _sut;
+    private Application.Queues.CalculateQueueDuration.Response _result = null!;
     private readonly ITaskQueueRepository _queueRepository;
 
     public CalculateQueueDurationTests()

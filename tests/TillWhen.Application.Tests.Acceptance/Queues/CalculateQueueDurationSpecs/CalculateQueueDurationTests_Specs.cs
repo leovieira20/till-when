@@ -5,7 +5,7 @@ using LightBDD.XUnit2;
 using TillWhen.Domain.Aggregates.ProjectAggregate;
 using TillWhen.Domain.Common;
 
-namespace TillWhen.Application.Tests.Acceptance.Queues;
+namespace TillWhen.Application.Tests.Acceptance.Queues.CalculateQueueDurationSpecs;
 
 [FeatureDescription("As a user I want to be able to calculate the duration of a queue")]
 public partial class CalculateQueueDurationTests

@@ -5,6 +5,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="TillWhen.Application.Tests.Acceptance" />
+    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="MediatR" Version="11.0.0" />
