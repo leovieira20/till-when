@@ -36,19 +36,19 @@ public class TaskQueue
 
     public List<QueueDay> GetTasksPerDay()
     {
-        var day = QueueDay.Default(Capacity);
+        var day = QueueDay.Empty(Capacity);
         var tasksPerDay = new List<QueueDay> { day };
 
         foreach (var t in Tasks)
         {
             if (day.HasCapacityFor(t))
             {
-                day.AddTask(t);
+                day.ScheduleTask(t);
             }
             else
             {
                 day = day.NextDay();
-                day.AddTask(t);
+                day.ScheduleTask(t);
                 tasksPerDay.Add(day);
             }
         }
@@ -60,7 +60,7 @@ public class TaskQueue
     {
         if (!Tasks.Any())
         {
-            return QueueDay.Default();
+            return QueueDay.Empty();
         }
 
         var tasks = Tasks.SelectMany(x => x.GetTasksForDate(date));

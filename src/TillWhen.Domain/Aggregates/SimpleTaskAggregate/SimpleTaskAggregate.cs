@@ -17,4 +17,9 @@ public class SimpleTask : IWorkable
     {
         throw new NotImplementedException();
     }
+
+    public void ReduceEffortBy(Duration capacity)
+    {
+        throw new NotImplementedException();
+    }
 }

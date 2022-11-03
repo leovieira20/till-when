@@ -9,4 +9,5 @@ public interface IWorkable
     string Status { get; set; }
     Duration Duration { get; }
     IEnumerable<IWorkable> GetTasksForDate(DateTime date);
+    void ReduceEffortBy(Duration capacity);
 }

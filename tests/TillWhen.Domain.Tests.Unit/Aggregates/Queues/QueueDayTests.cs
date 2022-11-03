@@ -32,4 +32,16 @@ public class QueueDayTests
         
         queueDay.HasCapacityFor(extraTask).Should().BeFalse();
     }
+
+    [Fact]
+    public void ReducesTasksRemainingEffort()
+    {
+        var task = Project.Create(Guid.NewGuid().ToString(), Duration.Create("1h"));
+        
+        var queueDay = QueueDay.Empty();
+        
+        queueDay.ScheduleTask(task);
+        
+        task.RemainingEffort.Should().Be(Duration.Create("0h"));
+    }
 }

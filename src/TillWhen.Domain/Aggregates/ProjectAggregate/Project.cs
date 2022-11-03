@@ -10,45 +10,28 @@ public class Project : IWorkable
     private TimeSpan _quota;
     private readonly Dictionary<DateTime, List<IWorkable>> _tasksPerDay;
 
-    public static Project Create()
-    {
-        return new();
-    }
-
-    public static Project Create(string title, Duration duration)
-    {
-        return new()
-        {
-            Title = title,
-            Duration = duration
-        };
-    }
-
-    public static Project Create(string title, string category, Duration duration)
-    {
-        return new()
-        {
-            Title = title,
-            Category = category,
-            Duration = duration
-        };
-    }
-
-    public static Project WithStartingDate(DateTime startingDate)
-    {
-        return new() { StartingDate = startingDate };
-    }
-
-    public static Project WithQuota(TimeSpan quota)
-    {
-        return new()
-        {
-            _quota = quota
-        };
-    }
+    public static Project Create() => new();
+    public static Project Create(string title, Duration duration) => new(title, duration);
+    public static Project Create(string title, string category, Duration duration) => new(title, category, duration);
+    public static Project WithStartingDate(DateTime startingDate) => new() { StartingDate = startingDate };
+    public static Project WithQuota(TimeSpan quota) => new() { _quota = quota };
 
     private Project()
+        : this(string.Empty, string.Empty, Duration.Empty())
     {
+    }
+
+    private Project(string title, Duration duration)
+        : this(title, string.Empty, duration)
+    {
+    }
+
+    private Project(string title, string category, Duration duration)
+    {
+        Title = title;
+        Category = category;
+        Duration = duration;
+        RemainingEffort = duration;
         _quota = TimeSpan.FromHours(16);
         StartingDate = DateTime.UtcNow.Date;
         _tasksPerDay = new() { { StartingDate, new() } };
@@ -131,10 +114,23 @@ public class Project : IWorkable
         return _tasksPerDay[date.Date];
     }
 
+    public void ReduceEffortBy(Duration capacity)
+    {
+        if (capacity > RemainingEffort)
+        {
+            RemainingEffort = Duration.Empty();
+        }
+        else
+        {
+            RemainingEffort -= capacity;    
+        }
+    }
+
     public Guid Id { get; set; }
     private DateTime StartingDate { get; init; }
     public string Title { get; private set; }
     public string Category { get; private set; }
+
     public double GetEstimate()
     {
         throw new NotImplementedException();
@@ -142,6 +138,7 @@ public class Project : IWorkable
 
     public string Status { get; set; }
     public Duration Duration { get; private set; }
+
     IEnumerable<IWorkable> IWorkable.GetTasksForDate(DateTime date)
     {
         return GetTasksForDate(date);
@@ -149,6 +146,7 @@ public class Project : IWorkable
 
     public Guid TaskQueueId { get; set; }
 
+    public Duration RemainingEffort { get; set; }
     public List<ProjectTask> PendingTasks => Tasks.Where(x => x.Status != TaskStatus.Completed).ToList();
     private List<ProjectTask> Tasks { get; }
 }

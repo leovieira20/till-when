@@ -9,8 +9,8 @@ public class QueueDay
 {
     private readonly Duration _capacity;
 
-    public static QueueDay Default() => new(DateTime.UtcNow);
-    public static QueueDay Default(Duration capacity) => new(DateTime.UtcNow, capacity);
+    public static QueueDay Empty() => new(DateTime.UtcNow);
+    public static QueueDay Empty(Duration capacity) => new(DateTime.UtcNow, capacity);
     public static QueueDay WithTasks(DateTime date, List<IWorkable> tasks) => new(date) { Tasks = tasks };
 
     private QueueDay() { }
@@ -26,7 +26,11 @@ public class QueueDay
 
     public bool HasCapacityFor(IWorkable task) => UsedCapacity + task.Duration <= _capacity;
 
-    public void AddTask(IWorkable task) => Tasks.Add(task);
+    public void ScheduleTask(IWorkable task)
+    {
+        task.ReduceEffortBy(_capacity - UsedCapacity);
+        Tasks.Add(task);
+    }
 
     public DateOnly Date { get; private set; }
 

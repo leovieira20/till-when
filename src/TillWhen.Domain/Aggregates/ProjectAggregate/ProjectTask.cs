@@ -45,6 +45,11 @@ public record ProjectTask : IWorkable
         throw new NotImplementedException();
     }
 
+    public void ReduceEffortBy(Duration capacity)
+    {
+        throw new NotImplementedException();
+    }
+
     string IWorkable.Status
     {
         get => this.Status;
