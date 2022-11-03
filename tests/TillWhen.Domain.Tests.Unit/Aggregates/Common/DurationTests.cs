@@ -86,16 +86,8 @@ public class DurationTests
     [Fact]
     public void ShouldDetectOverflowWhenSumming()
     {
-        var first = new Duration
-        {
-            Hours = 23,
-            Minutes = 59
-        };
-
-        var second = new Duration
-        {
-            Minutes = 1
-        };
+        Duration first = "23h 59m";
+        Duration second = "1m";
 
         var total = first + second;
 
