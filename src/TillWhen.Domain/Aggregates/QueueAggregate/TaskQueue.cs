@@ -38,8 +38,24 @@ public class TaskQueue
 
     public List<QueueDay> GetTasksPerDay()
     {
-        var day = QueueDay.WithTasks(DateTime.UtcNow, Tasks);
-        return new() { day };
+        var day = QueueDay.Default();
+        var tasksPerDay = new List<QueueDay> { day};
+
+        foreach (var t in Tasks)
+        {
+            if (day.HasCapacityFor(t))
+            {
+                day.AddTask(t);
+            }
+            else
+            {
+                day = new(day.Date.AddDays(1));
+                day.AddTask(t);
+                tasksPerDay.Add(day);
+            }
+        }
+        
+        return tasksPerDay;
     }
 
     public QueueDay GetTasksForDate(DateTime date)

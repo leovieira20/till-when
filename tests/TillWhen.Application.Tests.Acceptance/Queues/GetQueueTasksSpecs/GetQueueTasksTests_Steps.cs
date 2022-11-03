@@ -10,10 +10,10 @@ namespace TillWhen.Application.Tests.Acceptance.Queues.GetQueueTasksSpecs;
 
 public partial class GetQueueProjectsTests : FeatureFixture
 {
-    private GetQueueProjects.Response _response = null!;
+    private GetQueueTasks.Response _response = null!;
     private InputTable<IWorkable> _tasks = null!;
     private readonly ITaskQueueRepository _queueRepository;
-    private readonly GetQueueProjects.Handler _sut;
+    private readonly GetQueueTasks.Handler _sut;
 
     public GetQueueProjectsTests()
     {
@@ -42,6 +42,23 @@ public partial class GetQueueProjectsTests : FeatureFixture
 
         today.Date.Should().Be(DateOnly.FromDateTime(DateTime.UtcNow));
         today.Tasks.Should().BeEquivalentTo(_tasks);
+        
+        return Task.CompletedTask;
+    }
+
+    private Task ThenAListOfQueueDaysIsReturned(InputTable<QueueDay> days)
+    {
+        var expectedFirstDay = days.First();
+        var actualFirstDay = _response.Days.First();
+
+        actualFirstDay.Date.Should().Be(expectedFirstDay.Date);
+        actualFirstDay.Tasks.Should().BeEquivalentTo(actualFirstDay.Tasks);
+        
+        var expectedSecondDay = days[1];
+        var actualSecondDay = _response.Days[1];
+        
+        actualSecondDay.Date.Should().Be(expectedSecondDay.Date);
+        actualSecondDay.Tasks.Should().BeEquivalentTo(expectedSecondDay.Tasks);
         
         return Task.CompletedTask;
     }

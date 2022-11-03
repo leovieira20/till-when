@@ -3,7 +3,7 @@ using FluentAssertions;
 using TillWhen.Domain.Common;
 using Xunit;
 
-namespace TillWhen.Domain.Tests.Unit.Entities.Common;
+namespace TillWhen.Domain.Tests.Unit.Aggregates.Common;
 
 public class DurationTests
 {

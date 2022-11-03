@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using FluentAssertions;
 using TillWhen.Domain.Aggregates.ProjectAggregate;
 
-namespace TillWhen.Domain.Tests.Unit.Entities.Projects;
+namespace TillWhen.Domain.Tests.Unit.Aggregates.Projects;
 
 public partial class ProjectTestsSteps
 {

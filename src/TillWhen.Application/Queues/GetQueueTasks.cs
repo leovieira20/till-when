@@ -3,7 +3,7 @@ using TillWhen.Domain.Aggregates.QueueAggregate;
 
 namespace TillWhen.Application.Queues;
 
-public static class GetQueueProjects
+public static class GetQueueTasks
 {
     public record Request : IRequest<Response>;
     

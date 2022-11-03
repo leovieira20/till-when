@@ -3,7 +3,6 @@ using LightBDD.Framework.Parameters;
 using LightBDD.XUnit2;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
-using TillWhen.Domain.Aggregates.ProjectAggregate;
 using TillWhen.Domain.Aggregates.QueueAggregate;
 using TillWhen.Domain.Common;
 

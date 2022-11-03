@@ -7,7 +7,7 @@ using TillWhen.Domain.Aggregates.QueueAggregate;
 using TillWhen.Domain.Common;
 using Xunit;
 
-namespace TillWhen.Domain.Tests.Unit.Entities.Queues;
+namespace TillWhen.Domain.Tests.Unit.Aggregates.Queues;
 
 public class QueueTests
 {
@@ -42,7 +42,6 @@ public class QueueTests
             .Then(x => x.ThenDaySlotWithOnTaskIsReturned())
             .BDDfy();
     }
-
     private void GivenEmptyQueue()
     {
         _queue = TaskQueue.WithTasks(new());

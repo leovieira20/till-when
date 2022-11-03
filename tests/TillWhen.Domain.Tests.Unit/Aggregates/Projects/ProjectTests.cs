@@ -2,7 +2,7 @@
 using TestStack.BDDfy;
 using Xunit;
 
-namespace TillWhen.Domain.Tests.Unit.Entities.Projects;
+namespace TillWhen.Domain.Tests.Unit.Aggregates.Projects;
 
 public partial class ProjectTestsSteps
 {
