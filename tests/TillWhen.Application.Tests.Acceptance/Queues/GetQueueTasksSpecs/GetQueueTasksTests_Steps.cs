@@ -3,15 +3,15 @@ using LightBDD.Framework.Parameters;
 using LightBDD.XUnit2;
 using NSubstitute;
 using TillWhen.Application.Queues;
-using TillWhen.Domain.Aggregates.ProjectAggregate;
 using TillWhen.Domain.Aggregates.QueueAggregate;
+using TillWhen.Domain.Common;
 
-namespace TillWhen.Application.Tests.Acceptance.Queues.GetQueueProjectsSpecs;
+namespace TillWhen.Application.Tests.Acceptance.Queues.GetQueueTasksSpecs;
 
 public partial class GetQueueProjectsTests : FeatureFixture
 {
     private GetQueueProjects.Response _response = null!;
-    private InputTable<Project> _projects = null!;
+    private InputTable<IWorkable> _projects = null!;
     private readonly ITaskQueueRepository _queueRepository;
     private readonly GetQueueProjects.Handler _sut;
 
@@ -21,12 +21,12 @@ public partial class GetQueueProjectsTests : FeatureFixture
         _sut = new(_queueRepository);
     }
 
-    private Task GivenAQueueWithProjects(InputTable<Project> projects)
+    private Task GivenAQueueWithTasks(InputTable<IWorkable> projects)
     {
         _projects = projects;
         _queueRepository
             .GetAsync(default)
-            .ReturnsForAnyArgs(TaskQueue.WithProjects(_projects.ToList()));
+            .ReturnsForAnyArgs(TaskQueue.WithTasks(_projects.ToList()));
         
         return Task.CompletedTask;
     }
@@ -36,7 +36,7 @@ public partial class GetQueueProjectsTests : FeatureFixture
         _response = await _sut.Handle(new(), CancellationToken.None);
     }
 
-    private Task ThenAListOfProjectsIsReturned()
+    private Task ThenAListOfTasksForTodayIsReturned()
     {
         _response.Projects.Should().BeEquivalentTo(_projects);
         

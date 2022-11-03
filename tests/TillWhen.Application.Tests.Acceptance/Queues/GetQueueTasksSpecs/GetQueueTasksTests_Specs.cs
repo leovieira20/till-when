@@ -5,22 +5,22 @@ using LightBDD.XUnit2;
 using TillWhen.Domain.Aggregates.ProjectAggregate;
 using TillWhen.Domain.Common;
 
-namespace TillWhen.Application.Tests.Acceptance.Queues.GetQueueProjectsSpecs;
+namespace TillWhen.Application.Tests.Acceptance.Queues.GetQueueTasksSpecs;
 
 [FeatureDescription("")]
 public partial class GetQueueProjectsTests
 {
     [Scenario]
-    public Task ListQueueProjects()
+    public Task ListQueueTasks()
     {
         return Runner.RunScenarioAsync(
-            _ => GivenAQueueWithProjects(
+            _ => GivenAQueueWithTasks(
                 Table.For(
-                    Project.Create("Project 1", Duration.Create("1h")),
+                    (IWorkable)Project.Create("Project 1", Duration.Create("1h")),
                     Project.Create("Project 2", Duration.Create("1h"))
                 )),
             _ => WhenHandlerIsExecuted(),
-            _ => ThenAListOfProjectsIsReturned()
+            _ => ThenAListOfTasksForTodayIsReturned()
         );
     }
 }

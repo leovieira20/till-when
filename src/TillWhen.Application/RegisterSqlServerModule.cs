@@ -1,9 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using TillWhen.Application.Projects;
-using TillWhen.Domain.Aggregates.QueueAggregate;
 
 namespace TillWhen.Application;
 

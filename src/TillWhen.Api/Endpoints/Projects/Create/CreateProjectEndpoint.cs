@@ -1,7 +1,6 @@
 using FastEndpoints;
 using MediatR;
 using TillWhen.Api.Endpoints.Projects.GetByID;
-using TillWhen.Application.Projects;
 
 namespace TillWhen.Api.Endpoints.Projects.Create;
 

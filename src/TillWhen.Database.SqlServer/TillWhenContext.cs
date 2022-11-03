@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TillWhen.Domain.Aggregates.ProjectAggregate;
 using TillWhen.Domain.Aggregates.QueueAggregate;
-using TillWhen.Domain.Common;
 
 namespace TillWhen.Database.SqlServer;
 

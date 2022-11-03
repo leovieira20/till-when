@@ -4,6 +4,7 @@ using FluentAssertions;
 using TestStack.BDDfy;
 using TillWhen.Domain.Aggregates.ProjectAggregate;
 using TillWhen.Domain.Aggregates.QueueAggregate;
+using TillWhen.Domain.Common;
 using Xunit;
 
 namespace TillWhen.Domain.Tests.Unit.Entities.Queues;
@@ -44,7 +45,7 @@ public class QueueTests
 
     private void GivenEmptyQueue()
     {
-        _queue = TaskQueue.WithProjects(new());
+        _queue = TaskQueue.WithTasks(new());
     }
 
     private void GivenQueueWithOnProjectAndOnePendingTask()
@@ -52,12 +53,12 @@ public class QueueTests
         var project = Project.Create();
         project.AddTask(new(new (), TimeSpan.FromHours(1)));
 
-        var projects = new List<Project>
+        var projects = new List<IWorkable>
         {
             project
         };
 
-        _queue = TaskQueue.WithProjects(projects);
+        _queue = TaskQueue.WithTasks(projects);
     }
 
     private void GivenQueueWithOnProjectAndTwoTasksDueInDifferentDays()
@@ -67,12 +68,12 @@ public class QueueTests
         project.AddTask(new(new(), TimeSpan.FromHours(4)));
         project.AddTask(new(new(), TimeSpan.FromHours(4)));
 
-        var projects = new List<Project>
+        var projects = new List<IWorkable>
         {
             project
         };
 
-        _queue = TaskQueue.WithProjects(projects);
+        _queue = TaskQueue.WithTasks(projects);
     }
 
     private void WhenIAccessTasksForDay(DateTime date)

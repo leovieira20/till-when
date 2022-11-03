@@ -36,11 +36,11 @@ public partial class CalculateQueueDurationTests : FeatureFixture
             .ReturnsForAnyArgs(TaskQueue.Empty());
     }
 
-    private void GivenAQueueWithProjects(InputTable<Project> projects)
+    private void GivenAQueueWithProjects(InputTable<IWorkable> projects)
     {
         _queueRepository
             .GetAsync(Arg.Any<Guid>())
-            .ReturnsForAnyArgs(TaskQueue.WithProjects(projects.ToList()));
+            .ReturnsForAnyArgs(TaskQueue.WithTasks(projects.ToList()));
     }
 
     private async Task WhenTheActionIsExecuted()

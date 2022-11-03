@@ -2,14 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using TillWhen.Database.SqlServer;
 using TillWhen.Database.SqlServer.Repositories;
 using TillWhen.Domain.Aggregates.ProjectAggregate;
 using TillWhen.Domain.Aggregates.QueueAggregate;
 using TillWhen.Domain.Common;
 
-var projects = new List<Project>
+var projects = new List<IWorkable>
 {
     Project.Create("Specification Pattern in C#", "DDD", Duration.Create("1h 27m")),
     Project.Create("Domain-Driven Design in Practice", "DDD", Duration.Create("4h 19m")),
@@ -63,7 +62,7 @@ var projects = new List<Project>
     Project.Create("C# Design Patterns: Proxy", "Design Patterns", Duration.Create("35m")),
 };
 
-var queue = TaskQueue.WithProjects(projects);
+var queue = TaskQueue.WithTasks(projects);
 
 IConfiguration config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")

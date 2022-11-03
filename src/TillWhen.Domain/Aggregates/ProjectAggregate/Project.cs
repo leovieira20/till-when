@@ -1,21 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TillWhen.Domain.Aggregates.QueueAggregate;
 using TillWhen.Domain.Common;
 
 namespace TillWhen.Domain.Aggregates.ProjectAggregate;
 
-public class Project
+public class Project : IWorkable
 {
     private TimeSpan _quota;
-    private readonly Dictionary<DateTime, List<ProjectTask>> _tasksPerDay;
+    private readonly Dictionary<DateTime, List<IWorkable>> _tasksPerDay;
 
     public static Project Create()
     {
         return new();
     }
-    
+
     public static Project Create(string title, Duration duration)
     {
         return new()
@@ -24,7 +23,7 @@ public class Project
             Duration = duration
         };
     }
-    
+
     public static Project Create(string title, string category, Duration duration)
     {
         return new()
@@ -83,12 +82,12 @@ public class Project
         {
             var taskWithReducedEstimate = task.ReduceEstimate(dailyQuotaLeft);
             taskWithReducedEstimate.SetStartDate(lastDayWithEnoughCapacity);
-                
+
             _tasksPerDay[lastDayWithEnoughCapacity].Add(taskWithReducedEstimate);
             Tasks.Add(taskWithReducedEstimate);
-                
+
             _tasksPerDay.Add(lastDayWithEnoughCapacity.AddDays(1), new());
-                
+
             AddTask(taskWithReducedEstimate);
         }
     }
@@ -127,7 +126,7 @@ public class Project
             .SingleOrDefault(x => x.Id == id)?.StartingDate ?? throw new ArgumentException($"Invalid task id {id}");
     }
 
-    public List<ProjectTask> GetTasksForDate(DateTime date)
+    public List<IWorkable> GetTasksForDate(DateTime date)
     {
         return _tasksPerDay[date.Date];
     }
@@ -136,8 +135,18 @@ public class Project
     private DateTime StartingDate { get; init; }
     public string Title { get; private set; }
     public string Category { get; private set; }
+    public double GetEstimate()
+    {
+        throw new NotImplementedException();
+    }
+
+    public string Status { get; set; }
     public Duration Duration { get; private set; }
-    
+    IEnumerable<IWorkable> IWorkable.GetTasksForDate(DateTime date)
+    {
+        return GetTasksForDate(date);
+    }
+
     public Guid TaskQueueId { get; set; }
 
     public List<ProjectTask> PendingTasks => Tasks.Where(x => x.Status != TaskStatus.Completed).ToList();

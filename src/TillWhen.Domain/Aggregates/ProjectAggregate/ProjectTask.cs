@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using TillWhen.Domain.Common;
 
 namespace TillWhen.Domain.Aggregates.ProjectAggregate;
 
-public record ProjectTask
+public record ProjectTask : IWorkable
 {
     private ProjectTask() { }
     public ProjectTask(Guid id, TimeSpan estimate)
@@ -36,7 +38,19 @@ public record ProjectTask
     }
 
     public Guid Id { get; private set; }
-    public string Status { get; private set; }
+    public string Status { get; set; }
+    public Duration Duration { get; }
+    public IEnumerable<IWorkable> GetTasksForDate(DateTime date)
+    {
+        throw new NotImplementedException();
+    }
+
+    string IWorkable.Status
+    {
+        get => this.Status;
+        set => this.Status = value;
+    }
+
     public DateTime StartingDate { get; private set; }
     public TimeSpan Estimate { get; }
 }

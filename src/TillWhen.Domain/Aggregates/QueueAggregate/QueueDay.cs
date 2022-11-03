@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using TillWhen.Domain.Aggregates.ProjectAggregate;
+using TillWhen.Domain.Common;
 
 namespace TillWhen.Domain.Aggregates.QueueAggregate;
 
@@ -15,7 +15,7 @@ public class QueueDay
         Tasks = new();
     }
 
-    public static QueueDay WithTasks(List<ProjectTask> tasks)
+    public static QueueDay WithTasks(List<IWorkable> tasks)
     {
         return new()
         {
@@ -23,5 +23,5 @@ public class QueueDay
         };
     }
 
-    public List<ProjectTask> Tasks { get; private init; }
+    public List<IWorkable> Tasks { get; private init; }
 }
