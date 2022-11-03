@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TillWhen.Domain.Common;
 
@@ -7,21 +8,24 @@ public class QueueDay
 {
     public static QueueDay Default()
     {
-        return new();
+        return new(DateTime.UtcNow);
     }
 
-    private QueueDay()
+    public static QueueDay WithTasks(DateTime date, List<IWorkable> tasks)
     {
-        Tasks = new();
-    }
-
-    public static QueueDay WithTasks(List<IWorkable> tasks)
-    {
-        return new()
+        return new(date)
         {
             Tasks = tasks
         };
     }
+
+    private QueueDay(DateTime date)
+    {
+        Date = DateOnly.FromDateTime(date);
+        Tasks = new();
+    }
+
+    public DateOnly Date { get; private set; }
 
     public List<IWorkable> Tasks { get; private init; }
 }

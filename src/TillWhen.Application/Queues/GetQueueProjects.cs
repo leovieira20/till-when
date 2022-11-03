@@ -1,6 +1,5 @@
 using MediatR;
 using TillWhen.Domain.Aggregates.QueueAggregate;
-using TillWhen.Domain.Common;
 
 namespace TillWhen.Application.Queues;
 
@@ -21,9 +20,9 @@ public static class GetQueueProjects
         {
             var queue = await _queueRepository.GetAsync(Guid.Empty);
 
-            return new(queue.Tasks);
+            return new(queue.GetTasksPerDay());
         }
     }
 
-    public record Response(List<IWorkable> Projects);
+    public record Response(List<QueueDay> Days);
 }
