@@ -56,19 +56,6 @@ public class TaskQueue
         return tasksPerDay;
     }
 
-    public QueueDay GetTasksForDate(DateTime date)
-    {
-        if (!Tasks.Any())
-        {
-            return QueueDay.Empty();
-        }
-
-        var tasks = Tasks.SelectMany(x => x.GetTasksForDate(date));
-
-        return QueueDay.WithTasks(DateTime.UtcNow, tasks.ToList());
-    }
-
-
     public Guid Id { get; private set; }
     public Duration Capacity { get; private set; }
     public List<IWorkable> Tasks { get; private set; }
