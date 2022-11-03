@@ -24,7 +24,7 @@ public partial class CreateProjectTests : FeatureFixture
     private void GivenValidProjectSpecs()
     {
         _title = "Project 1";
-        _duration = Duration.Create("1d 2h 3m");
+        _duration = "1d 2h 3m";
     }
 
     private async Task WhenActionIsExecuted()

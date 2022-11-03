@@ -15,7 +15,7 @@ public class QueueDay
 
     private QueueDay() { }
     internal QueueDay(DateTime date)
-        : this(date, Duration.Create("16h")) { }
+        : this(date, "16h") { }
     private QueueDay(DateTime date, Duration capacity)
     {
         Date = DateOnly.FromDateTime(date);

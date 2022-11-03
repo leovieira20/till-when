@@ -14,8 +14,8 @@ public partial class GetQueueProjectsTests
     [Scenario]
     public Task ListQueueTasks()
     {
-        IWorkable taskOne = Project.Create("Task 1", Duration.Create("1h"));
-        IWorkable taskTwo = Project.Create("Task 2", Duration.Create("1h"));
+        IWorkable taskOne = Project.Create("Task 1", "1h");
+        IWorkable taskTwo = Project.Create("Task 2", "1h");
 
         return Runner.RunScenarioAsync(
             _ => GivenAQueueWithTasks(Table.For(taskOne, taskTwo)),
@@ -27,8 +27,8 @@ public partial class GetQueueProjectsTests
     [Scenario]
     public Task BreakQueueTasksPerDayOf16H()
     {
-        IWorkable taskOne = Project.Create("Task 1", Duration.Create("16h"));
-        IWorkable taskTwo = Project.Create("Task 2", Duration.Create("1h"));
+        IWorkable taskOne = Project.Create("Task 1", "16h");
+        IWorkable taskTwo = Project.Create("Task 2", "1h");
 
         return Runner.RunScenarioAsync(
             _ => GivenAQueueWithTasks(Table.For(taskOne, taskTwo)),
@@ -43,8 +43,8 @@ public partial class GetQueueProjectsTests
     [Scenario]
     public Task BreakQueueTasksPerDayOf8H()
     {
-        IWorkable taskOne = Project.Create("Task 1", Duration.Create("8h"));
-        IWorkable taskTwo = Project.Create("Task 2", Duration.Create("8h"));
+        IWorkable taskOne = Project.Create("Task 1", "8h");
+        IWorkable taskTwo = Project.Create("Task 2", "8h");
 
         return Runner.RunScenarioAsync(
             _ => GivenAQueueSetUpFor8HWithTasks(Table.For(taskOne, taskTwo)),

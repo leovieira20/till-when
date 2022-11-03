@@ -8,7 +8,7 @@ namespace TillWhen.Domain.Aggregates.QueueAggregate;
 public class TaskQueue
 {
     private TaskQueue()
-        : this(Duration.Create("16h"))
+        : this("16h")
     {
     }
 

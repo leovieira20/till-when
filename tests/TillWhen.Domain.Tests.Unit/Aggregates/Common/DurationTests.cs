@@ -10,7 +10,7 @@ public class DurationTests
     [Fact]
     public void ShouldDetectIncorrectFormat()
     {
-        var duration = Duration.Create("invalid");
+        Duration duration = "invalid";
 
         duration.Minutes.Should().Be(0);
         duration.Hours.Should().Be(0);
@@ -22,7 +22,7 @@ public class DurationTests
     [MemberData(nameof(Values))]
     public void ShouldConvertMinutes(int minutes)
     {
-        var duration = Duration.Create($"{minutes}m");
+        Duration duration = $"{minutes}m";
 
         duration.Minutes.Should().Be(minutes);
     }
@@ -31,7 +31,7 @@ public class DurationTests
     [MemberData(nameof(Values))]
     public void ShouldConvertHours(int hours)
     {
-        var duration = Duration.Create($"{hours}h");
+        Duration duration = $"{hours}h";
 
         duration.Hours.Should().Be(hours);
     }
@@ -40,7 +40,7 @@ public class DurationTests
     [InlineData(1, 24)]
     public void ShouldConvertDays(int days, int totalHours)
     {
-        var duration = Duration.Create($"{days}d");
+        Duration duration = $"{days}d";
 
         duration.Days.Should().Be(days);
         duration.TotalHours.Should().Be(totalHours);
@@ -49,7 +49,7 @@ public class DurationTests
     [Fact]
     public void ShouldConvertFullFormat()
     {
-        var duration = Duration.Create("1d 2h 3m");
+        Duration duration = "1d 2h 3m";
 
         duration.Days.Should().Be(1);
         duration.Hours.Should().Be(2);
@@ -62,7 +62,7 @@ public class DurationTests
     [InlineData("25h", 1, 1, 0)]
     public void ShouldDetectOverflow(string value, int days, int hours, int minutes)
     {
-        var duration = Duration.Create(value);
+        Duration duration = value;
 
         duration.Days.Should().Be(days);
         duration.Hours.Should().Be(hours);
@@ -72,8 +72,8 @@ public class DurationTests
     [Fact]
     public void ShouldSumDurations()
     {
-        var oneHour = Duration.Create("1h");
-        var oneDay = Duration.Create("1d");
+        Duration oneHour = "1h";
+        Duration oneDay = "1d";
         
         var total = oneHour + oneDay;
 
@@ -109,7 +109,7 @@ public class DurationTests
     [InlineData("1h", 2)]
     public void ShouldConvertToTomatoes(string format, int tomatoes)
     {
-        var duration = Duration.Create(format);
+        Duration duration = format;
 
         duration.Tomatoes.Should().Be(tomatoes);
     }

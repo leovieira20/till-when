@@ -31,7 +31,7 @@ public partial class GetQueueProjectsTests : FeatureFixture
 
     private Task GivenAQueueSetUpFor8HWithTasks(InputTable<IWorkable> tasks)
     {
-        var queue = TaskQueue.WithCapacityAndTasks(Duration.Create("8h"), tasks.ToList());
+        var queue = TaskQueue.WithCapacityAndTasks("8h", tasks.ToList());
         
         _queueRepository
             .GetAsync(default)

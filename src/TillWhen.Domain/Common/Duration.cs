@@ -5,7 +5,7 @@ namespace TillWhen.Domain.Common;
 
 public record Duration
 {
-    private TimeSpan _timespan;
+    private readonly TimeSpan _timespan;
 
     public static Duration Empty() => new();
     public static Duration Create(string value) => new(value);
@@ -15,10 +15,7 @@ public record Duration
     {
     }
 
-    private Duration(TimeSpan timespan)
-    {
-        _timespan = timespan;
-    }
+    private Duration(TimeSpan timespan) => _timespan = timespan;
 
     private Duration(string value)
     {
@@ -51,6 +48,8 @@ public record Duration
         TotalHours = (int)_timespan.TotalHours;
         Tomatoes = (int)(_timespan.TotalMinutes / 25);
     }
+    
+    public static implicit operator Duration(string d) => Create(d);
 
     public static Duration operator +(Duration left, Duration right)
     {

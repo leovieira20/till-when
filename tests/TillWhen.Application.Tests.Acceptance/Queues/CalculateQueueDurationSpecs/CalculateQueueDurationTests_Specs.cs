@@ -38,10 +38,10 @@ public partial class CalculateQueueDurationTests
         await Runner
             .AddSteps(
                 _ => GivenAQueueWithProjects(Table.For(
-                    (IWorkable)Project.Create("Project 01", Duration.Create("1d"))
+                    (IWorkable)Project.Create("Project 01", "1d")
                 )))
             .AddAsyncSteps(_ => WhenTheActionIsExecuted())
-            .AddSteps(_ => TheDurationShouldBe(Duration.Create("1d")))
+            .AddSteps(_ => TheDurationShouldBe("1d"))
             .RunAsync();
     }
     
@@ -51,12 +51,12 @@ public partial class CalculateQueueDurationTests
         await Runner
             .AddSteps(
                 _ => GivenAQueueWithProjects(Table.For(
-                    (IWorkable) Project.Create("Project 01", Duration.Create("1d")),
-                    Project.Create("Project 01", Duration.Create("2h")),
-                    Project.Create("Project 01", Duration.Create("3m"))
+                    (IWorkable) Project.Create("Project 01", "1d"),
+                    Project.Create("Project 01", "2h"),
+                    Project.Create("Project 01", "3m")
                 )))
             .AddAsyncSteps(_ => WhenTheActionIsExecuted())
-            .AddSteps(_ => TheDurationShouldBe(Duration.Create("1d 2h 3m")))
+            .AddSteps(_ => TheDurationShouldBe("1d 2h 3m"))
             .RunAsync();
     }
 }

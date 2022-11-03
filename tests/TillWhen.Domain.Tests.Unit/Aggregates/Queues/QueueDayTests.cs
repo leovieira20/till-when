@@ -12,11 +12,11 @@ public class QueueDayTests
     [Fact]
     public void CanIncludeOneMoreTask()
     {
-        var existingTask = Project.Create(Guid.NewGuid().ToString(), Duration.Create("1h"));
+        var existingTask = Project.Create(Guid.NewGuid().ToString(), "1h");
         
         var queueDay = new QueueDay(DateTime.UtcNow) { Tasks = new() { existingTask } };
 
-        var extraTask = Project.Create(Guid.NewGuid().ToString(), Duration.Create("1h"));
+        var extraTask = Project.Create(Guid.NewGuid().ToString(), "1h");
         
         queueDay.HasCapacityFor(extraTask).Should().BeTrue();
     }
@@ -24,11 +24,11 @@ public class QueueDayTests
     [Fact]
     public void CannotIncludeOneMoreTask()
     {
-        var existingTask = Project.Create(Guid.NewGuid().ToString(), Duration.Create("24h"));
+        var existingTask = Project.Create(Guid.NewGuid().ToString(), "24h");
         
         var queueDay = new QueueDay(DateTime.UtcNow) { Tasks = new() { existingTask } };
 
-        var extraTask = Project.Create(Guid.NewGuid().ToString(), Duration.Create("1h"));
+        var extraTask = Project.Create(Guid.NewGuid().ToString(), "1h");
         
         queueDay.HasCapacityFor(extraTask).Should().BeFalse();
     }
@@ -36,12 +36,12 @@ public class QueueDayTests
     [Fact]
     public void ReducesTasksRemainingEffort()
     {
-        var task = Project.Create(Guid.NewGuid().ToString(), Duration.Create("1h"));
+        var task = Project.Create(Guid.NewGuid().ToString(), "1h");
         
         var queueDay = QueueDay.Empty();
         
         queueDay.ScheduleTask(task);
         
-        task.RemainingEffort.Should().Be(Duration.Create("0h"));
+        task.RemainingEffort.Should().Be(Duration.Empty());
     }
 }

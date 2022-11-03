@@ -1,6 +1,5 @@
 using FastEndpoints;
 using TillWhen.Application.Projects;
-using TillWhen.Domain.Common;
 
 namespace TillWhen.Api.Endpoints.Projects.Create;
 
@@ -8,6 +7,6 @@ public class CreateProjectCommandMapper : Mapper<CreateProjectRequest, CreatePro
 {
     public override CreateProject.Command ToEntity(CreateProjectRequest r)
     {
-        return new(r.Title, Duration.Create(r.Duration));
+        return new(r.Title, r.Duration);
     }
 }
