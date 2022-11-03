@@ -14,28 +14,44 @@ public partial class GetQueueProjectsTests
     [Scenario]
     public Task ListQueueTasks()
     {
-        IWorkable projectOne = Project.Create("Task 1", Duration.Create("1h"));
-        IWorkable projectTwo = Project.Create("Task 2", Duration.Create("1h"));
+        IWorkable taskOne = Project.Create("Task 1", Duration.Create("1h"));
+        IWorkable taskTwo = Project.Create("Task 2", Duration.Create("1h"));
 
         return Runner.RunScenarioAsync(
-            _ => GivenAQueueWithTasks(Table.For(projectOne, projectTwo)),
+            _ => GivenAQueueWithTasks(Table.For(taskOne, taskTwo)),
             _ => WhenHandlerIsExecuted(),
-            _ => ThenAListOfTasksForTodayIsReturned()
+            _ => ThenAListOfTasksForTodayIsReturned(Table.For(taskOne, taskTwo))
         );
     }
 
     [Scenario]
-    public Task BreakQueueTasksPerDay()
+    public Task BreakQueueTasksPerDayOf16H()
     {
-        IWorkable projectOne = Project.Create("Task 1", Duration.Create("24h"));
-        IWorkable projectTwo = Project.Create("Task 2", Duration.Create("24h"));
+        IWorkable taskOne = Project.Create("Task 1", Duration.Create("16h"));
+        IWorkable taskTwo = Project.Create("Task 2", Duration.Create("1h"));
 
         return Runner.RunScenarioAsync(
-            _ => GivenAQueueWithTasks(Table.For(projectOne, projectTwo)),
+            _ => GivenAQueueWithTasks(Table.For(taskOne, taskTwo)),
             _ => WhenHandlerIsExecuted(),
             _ => ThenAListOfQueueDaysIsReturned(Table.For(
-                QueueDay.WithTasks(DateTime.UtcNow, new() { projectOne }),
-                QueueDay.WithTasks(DateTime.UtcNow.AddDays(1), new() { projectTwo })
+                QueueDay.WithTasks(DateTime.UtcNow, new() { taskOne }),
+                QueueDay.WithTasks(DateTime.UtcNow.AddDays(1), new() { taskTwo })
+            ))
+        );
+    }
+    
+    [Scenario]
+    public Task BreakQueueTasksPerDayOf8H()
+    {
+        IWorkable taskOne = Project.Create("Task 1", Duration.Create("8h"));
+        IWorkable taskTwo = Project.Create("Task 2", Duration.Create("8h"));
+
+        return Runner.RunScenarioAsync(
+            _ => GivenAQueueSetUpFor8HWithTasks(Table.For(taskOne, taskTwo)),
+            _ => WhenHandlerIsExecuted(),
+            _ => ThenAListOfQueueDaysIsReturned(Table.For(
+                QueueDay.WithTasks(DateTime.UtcNow, new() { taskOne }),
+                QueueDay.WithTasks(DateTime.UtcNow.AddDays(1), new() { taskTwo })
             ))
         );
     }

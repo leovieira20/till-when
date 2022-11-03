@@ -8,22 +8,20 @@ namespace TillWhen.Domain.Aggregates.QueueAggregate;
 public class TaskQueue
 {
     private TaskQueue()
+        : this(Duration.Create("16h"))
     {
+    }
+
+    private TaskQueue(Duration capacity)
+    {
+        Capacity = capacity;
         Tasks = new();
     }
 
-    public static TaskQueue Empty()
-    {
-        return new();
-    }
-
-    public static TaskQueue WithTasks(List<IWorkable> tasks)
-    {
-        return new()
-        {
-            Tasks = tasks
-        };
-    }
+    public static TaskQueue Empty() => new();
+    public static TaskQueue WithTasks(List<IWorkable> tasks) => new() { Tasks = tasks };
+    public static TaskQueue WithCapacityAndTasks(Duration capacity, List<IWorkable> tasks) =>
+        new(capacity) { Tasks = tasks };
 
     public Duration CalculateDuration()
     {
@@ -38,8 +36,8 @@ public class TaskQueue
 
     public List<QueueDay> GetTasksPerDay()
     {
-        var day = QueueDay.Default();
-        var tasksPerDay = new List<QueueDay> { day};
+        var day = QueueDay.Default(Capacity);
+        var tasksPerDay = new List<QueueDay> { day };
 
         foreach (var t in Tasks)
         {
@@ -49,12 +47,12 @@ public class TaskQueue
             }
             else
             {
-                day = new(day.Date.AddDays(1));
+                day = day.NextDay();
                 day.AddTask(t);
                 tasksPerDay.Add(day);
             }
         }
-        
+
         return tasksPerDay;
     }
 
@@ -70,6 +68,8 @@ public class TaskQueue
         return QueueDay.WithTasks(DateTime.UtcNow, tasks.ToList());
     }
 
-    public Guid Id { get; set; }
+
+    public Guid Id { get; private set; }
+    public Duration Capacity { get; private set; }
     public List<IWorkable> Tasks { get; private set; }
 }

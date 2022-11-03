@@ -7,34 +7,26 @@ namespace TillWhen.Domain.Aggregates.QueueAggregate;
 
 public class QueueDay
 {
-    private readonly Duration _capacity = Duration.Create("24h");
+    private readonly Duration _capacity;
 
     public static QueueDay Default() => new(DateTime.UtcNow);
+    public static QueueDay Default(Duration capacity) => new(DateTime.UtcNow, capacity);
     public static QueueDay WithTasks(DateTime date, List<IWorkable> tasks) => new(date) { Tasks = tasks };
 
-    private QueueDay()
-    {
-    }
-
+    private QueueDay() { }
     internal QueueDay(DateTime date)
-        : this(DateOnly.FromDateTime(date))
+        : this(date, Duration.Create("16h")) { }
+    private QueueDay(DateTime date, Duration capacity)
     {
+        Date = DateOnly.FromDateTime(date);
+        _capacity = capacity;
     }
-    internal QueueDay(DateOnly date)
-    {
-        Date = date;
-        Tasks = new();
-    }
+    
+    public QueueDay NextDay() => new(Date.ToDateTime(TimeOnly.MinValue).AddDays(1), _capacity);
 
-    public bool HasCapacityFor(IWorkable task)
-    {
-        return UsedCapacity + task.Duration <= _capacity;
-    }
+    public bool HasCapacityFor(IWorkable task) => UsedCapacity + task.Duration <= _capacity;
 
-    public void AddTask(IWorkable task)
-    {
-        Tasks.Add(task);
-    }
+    public void AddTask(IWorkable task) => Tasks.Add(task);
 
     public DateOnly Date { get; private set; }
 

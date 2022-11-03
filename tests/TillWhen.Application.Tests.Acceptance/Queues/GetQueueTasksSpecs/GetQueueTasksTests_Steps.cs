@@ -11,7 +11,6 @@ namespace TillWhen.Application.Tests.Acceptance.Queues.GetQueueTasksSpecs;
 public partial class GetQueueProjectsTests : FeatureFixture
 {
     private GetQueueTasks.Response _response = null!;
-    private InputTable<IWorkable> _tasks = null!;
     private readonly ITaskQueueRepository _queueRepository;
     private readonly GetQueueTasks.Handler _sut;
 
@@ -21,12 +20,22 @@ public partial class GetQueueProjectsTests : FeatureFixture
         _sut = new(_queueRepository);
     }
 
-    private Task GivenAQueueWithTasks(InputTable<IWorkable> projects)
+    private Task GivenAQueueWithTasks(InputTable<IWorkable> tasks)
     {
-        _tasks = projects;
         _queueRepository
             .GetAsync(default)
-            .ReturnsForAnyArgs(TaskQueue.WithTasks(_tasks.ToList()));
+            .ReturnsForAnyArgs(TaskQueue.WithTasks(tasks.ToList()));
+        
+        return Task.CompletedTask;
+    }
+
+    private Task GivenAQueueSetUpFor8HWithTasks(InputTable<IWorkable> tasks)
+    {
+        var queue = TaskQueue.WithCapacityAndTasks(Duration.Create("8h"), tasks.ToList());
+        
+        _queueRepository
+            .GetAsync(default)
+            .ReturnsForAnyArgs(queue);
         
         return Task.CompletedTask;
     }
@@ -36,12 +45,12 @@ public partial class GetQueueProjectsTests : FeatureFixture
         _response = await _sut.Handle(new(), CancellationToken.None);
     }
 
-    private Task ThenAListOfTasksForTodayIsReturned()
+    private Task ThenAListOfTasksForTodayIsReturned(InputTable<IWorkable> tasks)
     {
         var today = _response.Days.First();
 
         today.Date.Should().Be(DateOnly.FromDateTime(DateTime.UtcNow));
-        today.Tasks.Should().BeEquivalentTo(_tasks);
+        today.Tasks.Should().BeEquivalentTo(tasks.ToList());
         
         return Task.CompletedTask;
     }
