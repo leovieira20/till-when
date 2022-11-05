@@ -1,7 +1,7 @@
 using System;
 using FluentAssertions;
-using TillWhen.Domain.Aggregates.ProjectAggregate;
 using TillWhen.Domain.Aggregates.QueueAggregate;
+using TillWhen.Domain.Aggregates.WorkableAggregate;
 using Xunit;
 
 namespace TillWhen.Domain.Tests.Unit.Aggregates.Queues;
@@ -16,37 +16,37 @@ public class QueueDayTests
     }
 
     [Fact]
-    public void CanIncludeOneMoreTask()
+    public void CanIncludeOneMoreWorkable()
     {
-        var existingTask = Project.Create(Guid.NewGuid().ToString(), "1h");
+        var existingWorkable = Workable.Create(Guid.NewGuid().ToString(), "1h");
 
-        _queueDay.ScheduleTask(existingTask);
+        _queueDay.ScheduleWorkable(existingWorkable);
 
-        var extraTask = Project.Create(Guid.NewGuid().ToString(), "1h");
+        var extraWorkable = Workable.Create(Guid.NewGuid().ToString(), "1h");
         
-        _queueDay.HasCapacityFor(extraTask).Should().BeTrue();
+        _queueDay.HasCapacityFor(extraWorkable).Should().BeTrue();
     }
     
     [Fact]
-    public void CannotIncludeOneMoreTask()
+    public void CannotIncludeOneMoreWorkable()
     {
-        var existingTask = Project.Create(Guid.NewGuid().ToString(), "24h");
+        var existingWorkable = Workable.Create(Guid.NewGuid().ToString(), "24h");
         
-        _queueDay.ScheduleTask(existingTask);
+        _queueDay.ScheduleWorkable(existingWorkable);
 
-        var extraTask = Project.Create(Guid.NewGuid().ToString(), "1h");
+        var extraWorkable = Workable.Create(Guid.NewGuid().ToString(), "1h");
         
-        _queueDay.HasCapacityFor(extraTask).Should().BeFalse();
+        _queueDay.HasCapacityFor(extraWorkable).Should().BeFalse();
     }
 
     [Fact]
-    public void ReducesTasksRemainingEffort()
+    public void ReducesWorkablesRemainingEffort()
     {
-        var task = Project.Create(Guid.NewGuid().ToString(), "1h");
+        var workable = Workable.Create(Guid.NewGuid().ToString(), "1h");
 
-        _queueDay.ScheduleTask(task);
+        _queueDay.ScheduleWorkable(workable);
         
-        task.ScheduledEffort.Hours.Should().Be(1);
-        task.RemainingEffort.Hours.Should().Be(0);
+        workable.ScheduledEffort.Hours.Should().Be(1);
+        workable.RemainingEffort.Hours.Should().Be(0);
     }
 }

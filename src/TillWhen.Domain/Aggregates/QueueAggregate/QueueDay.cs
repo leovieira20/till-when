@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TillWhen.Domain.Aggregates.ProjectAggregate;
+using TillWhen.Domain.Aggregates.WorkableAggregate;
 using TillWhen.Domain.Common;
 
 namespace TillWhen.Domain.Aggregates.QueueAggregate;
@@ -12,7 +12,7 @@ public class QueueDay
 
     public static QueueDay Empty() => new(DateTime.UtcNow);
     public static QueueDay Empty(Duration capacity) => new(DateTime.UtcNow, capacity);
-    public static QueueDay WithTasks(DateTime date, List<IWorkable> tasks) => new(date) { Tasks = tasks };
+    public static QueueDay WithWorkables(DateTime date, List<IWorkable> tasks) => new(date) { Workables = tasks };
 
     private QueueDay() { }
     internal QueueDay(DateTime date)
@@ -27,17 +27,17 @@ public class QueueDay
 
     public bool HasCapacityFor(IWorkable task) => _capacity - UsedCapacity > Duration.Zero();
 
-    public Project ScheduleTask(IWorkable task)
+    public Workable ScheduleWorkable(IWorkable task)
     {
         var remainingEffort = task.ScheduleEffortBy(_capacity - UsedCapacity);
-        Tasks.Add(task);
+        Workables.Add(task);
         return remainingEffort;
     }
 
     private Duration UsedCapacity =>
-        Tasks.Aggregate(Duration.Zero(), (duration, workable) => duration + workable.ScheduledDuration);
+        Workables.Aggregate(Duration.Zero(), (duration, workable) => duration + workable.ScheduledDuration);
 
     public DateOnly Date { get; private set; }
 
-    public List<IWorkable> Tasks { get; internal init; } = new();
+    public List<IWorkable> Workables { get; internal init; } = new();
 }

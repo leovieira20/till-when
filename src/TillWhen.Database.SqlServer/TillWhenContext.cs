@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using TillWhen.Domain.Aggregates.ProjectAggregate;
 using TillWhen.Domain.Aggregates.QueueAggregate;
+using TillWhen.Domain.Aggregates.WorkableAggregate;
 
 namespace TillWhen.Database.SqlServer;
 
@@ -17,20 +17,20 @@ public class TillWhenContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .Entity<Project>()
+            .Entity<Workable>()
             .Property(x => x.Title)
             .HasMaxLength(200);
         
         modelBuilder
-            .Entity<Project>()
+            .Entity<Workable>()
             .Property(x => x.Category)
             .HasMaxLength(100);
         
         modelBuilder
-            .Entity<Project>()
+            .Entity<Workable>()
             .OwnsOne(x => x.Duration);
     }
 
-    public DbSet<Project> Projects { get; set; }
-    public DbSet<TaskQueue> TaskQueues { get; set; }
+    public DbSet<Workable> Workables { get; set; }
+    public DbSet<WorkableQueue> WorkableQueues { get; set; }
 }

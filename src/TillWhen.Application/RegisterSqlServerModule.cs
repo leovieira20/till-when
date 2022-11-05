@@ -1,6 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Builder;
-using TillWhen.Application.Projects;
+using TillWhen.Application.Workables;
 
 namespace TillWhen.Application;
 
@@ -11,7 +11,7 @@ public static class RegisterApplicationModule
         var services = builder.Services;
         
         services
-            .AddMediatR(typeof(CreateProject));
+            .AddMediatR(typeof(CreateWorkable));
 
         return builder;
     }

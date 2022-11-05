@@ -1,4 +1,4 @@
-using TillWhen.Domain.Aggregates.ProjectAggregate;
+using TillWhen.Domain.Aggregates.WorkableAggregate;
 
 namespace TillWhen.Domain.Common;
 
@@ -6,6 +6,6 @@ public interface IWorkable
 {
     Duration Duration { get; }
     Duration ScheduledDuration { get; }
-    Project ScheduleEffortBy(Duration scheduledEffort);
+    Workable ScheduleEffortBy(Duration scheduledEffort);
     bool HasRemainingEffort();
 }

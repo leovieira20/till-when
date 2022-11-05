@@ -2,7 +2,7 @@ using LightBDD.Framework;
 using LightBDD.Framework.Parameters;
 using LightBDD.Framework.Scenarios;
 using LightBDD.XUnit2;
-using TillWhen.Domain.Aggregates.ProjectAggregate;
+using TillWhen.Domain.Aggregates.WorkableAggregate;
 using TillWhen.Domain.Common;
 
 namespace TillWhen.Application.Tests.Acceptance.Queues.CalculateQueueDurationSpecs;
@@ -26,19 +26,19 @@ public partial class CalculateQueueDurationTests
     {
         await Runner
             .AddSteps(
-                _ => GivenAQueueWithNoProjects())
+                _ => GivenAQueueWithNoWorkables())
             .AddAsyncSteps(_ => WhenTheActionIsExecuted())
             .AddSteps(_ => TheDurationShouldBe(Duration.Zero()))
             .RunAsync();
     }
     
     [Scenario]
-    public async Task CalculateDurationForOneProject()
+    public async Task CalculateDurationForOneWorkable()
     {
         await Runner
             .AddSteps(
-                _ => GivenAQueueWithProjects(Table.For(
-                    (IWorkable)Project.Create("Project 01", "1d")
+                _ => GivenAQueueWithWorkables(Table.For(
+                    (IWorkable)Workable.Create("Workable 01", "1d")
                 )))
             .AddAsyncSteps(_ => WhenTheActionIsExecuted())
             .AddSteps(_ => TheDurationShouldBe("1d"))
@@ -46,14 +46,14 @@ public partial class CalculateQueueDurationTests
     }
     
     [Scenario]
-    public async Task CalculateDurationForMultipleProjects()
+    public async Task CalculateDurationForMultipleWorkables()
     {
         await Runner
             .AddSteps(
-                _ => GivenAQueueWithProjects(Table.For(
-                    (IWorkable) Project.Create("Project 01", "1d"),
-                    Project.Create("Project 01", "2h"),
-                    Project.Create("Project 01", "3m")
+                _ => GivenAQueueWithWorkables(Table.For(
+                    (IWorkable) Workable.Create("Workable 01", "1d"),
+                    Workable.Create("Workable 01", "2h"),
+                    Workable.Create("Workable 01", "3m")
                 )))
             .AddAsyncSteps(_ => WhenTheActionIsExecuted())
             .AddSteps(_ => TheDurationShouldBe("1d 2h 3m"))

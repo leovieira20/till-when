@@ -12,11 +12,11 @@ public partial class CalculateQueueDurationTests : FeatureFixture
 {
     private readonly Application.Queues.CalculateQueueDuration.Handler _sut;
     private Application.Queues.CalculateQueueDuration.Response _result = null!;
-    private readonly ITaskQueueRepository _queueRepository;
+    private readonly IWorkableQueueRepository _queueRepository;
 
     public CalculateQueueDurationTests()
     {
-        _queueRepository = Substitute.For<ITaskQueueRepository>();
+        _queueRepository = Substitute.For<IWorkableQueueRepository>();
         _sut = new(_queueRepository);
     }
     
@@ -28,18 +28,18 @@ public partial class CalculateQueueDurationTests : FeatureFixture
 
     }
     
-    private void GivenAQueueWithNoProjects()
+    private void GivenAQueueWithNoWorkables()
     {
         _queueRepository
             .GetAsync(Arg.Any<Guid>())
-            .ReturnsForAnyArgs(TaskQueue.Empty());
+            .ReturnsForAnyArgs(WorkableQueue.Empty());
     }
 
-    private void GivenAQueueWithProjects(InputTable<IWorkable> projects)
+    private void GivenAQueueWithWorkables(InputTable<IWorkable> projects)
     {
         _queueRepository
             .GetAsync(Arg.Any<Guid>())
-            .ReturnsForAnyArgs(TaskQueue.WithTasks(projects.ToList()));
+            .ReturnsForAnyArgs(WorkableQueue.WithWorkables(projects.ToList()));
     }
 
     private async Task WhenTheActionIsExecuted()

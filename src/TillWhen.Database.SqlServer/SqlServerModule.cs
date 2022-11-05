@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TillWhen.Database.SqlServer.Repositories;
-using TillWhen.Domain.Aggregates.ProjectAggregate;
 using TillWhen.Domain.Aggregates.QueueAggregate;
+using TillWhen.Domain.Aggregates.WorkableAggregate;
 
 namespace TillWhen.Database.SqlServer;
 
@@ -22,8 +22,8 @@ public static class SqlServerModule
                 x.UseSqlServer(connectionString);
             });
 
-        services.AddScoped<IProjectRepository, EfProjectRepository>();
-        services.AddScoped<ITaskQueueRepository, EfTaskQueueRepository>();
+        services.AddScoped<IWorkableRepository, EfWorkableRepository>();
+        services.AddScoped<IWorkableQueueRepository, EfWorkableQueueRepository>();
 
         return builder;
     }
