@@ -22,30 +22,47 @@ public class Project : IWorkable
         RemainingEffort = duration;
         StartingDate = DateTime.UtcNow.Date;
     }
-    public void ReduceEffortBy(Duration capacity)
+
+    public bool HasRemainingEffort()
     {
-        if (capacity > RemainingEffort)
+        return RemainingEffort > Duration.Zero();
+    }
+
+    public Duration ScheduledDuration => ScheduledEffort;
+
+    public Project ScheduleEffortBy(Duration scheduledEffort)
+    {
+        if (scheduledEffort > RemainingEffort)
         {
-            RemainingEffort = Duration.Empty();
+            ScheduledEffort = RemainingEffort;
+            RemainingEffort = Duration.Zero();
         }
         else
         {
-            RemainingEffort -= capacity;    
+            ScheduledEffort = scheduledEffort;
+            RemainingEffort -= scheduledEffort;
         }
+
+        return Create(Title, Category, RemainingEffort);
     }
-
-    public Guid Id { get; set; }
-    private DateTime StartingDate { get; init; }
-    public string Title { get; private set; }
-    public string Category { get; private set; }
-
+    
     public double GetEstimate()
     {
         throw new NotImplementedException();
     }
 
+    public Guid Id { get; set; }
+
+    private DateTime StartingDate { get; init; }
+
+    public string Title { get; private set; }
+
+    public string Category { get; private set; }
+
+
     public string Status { get; set; }
     public Duration Duration { get; private set; }
     public Duration RemainingEffort { get; set; }
+    public Duration ScheduledEffort { get; set; } = Duration.Zero();
     private List<ProjectTask> Tasks { get; } = new();
 }

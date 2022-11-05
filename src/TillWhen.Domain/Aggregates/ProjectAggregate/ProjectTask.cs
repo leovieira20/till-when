@@ -4,7 +4,7 @@ using TillWhen.Domain.Common;
 
 namespace TillWhen.Domain.Aggregates.ProjectAggregate;
 
-public record ProjectTask : IWorkable
+public record ProjectTask(Duration ScheduledDuration) : IWorkable
 {
     public double GetEstimate()
     {
@@ -19,9 +19,15 @@ public record ProjectTask : IWorkable
         throw new NotImplementedException();
     }
 
-    public void ReduceEffortBy(Duration capacity)
+    public Project ScheduleEffortBy(Duration scheduledEffort)
     {
         throw new NotImplementedException();
     }
+
+    public bool HasRemainingEffort()
+    {
+        throw new NotImplementedException();
+    }
+
     public TimeSpan Estimate { get; }
 }

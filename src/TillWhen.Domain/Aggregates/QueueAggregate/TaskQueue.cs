@@ -27,11 +27,11 @@ public class TaskQueue
     {
         if (!Tasks.Any())
         {
-            return Duration.Empty();
+            return Duration.Zero();
         }
 
         return Tasks
-            .Aggregate(Duration.Empty(), (current, p) => current + p.Duration);
+            .Aggregate(Duration.Zero(), (current, p) => current + p.Duration);
     }
 
     public List<QueueDay> GetTasksPerDay()
@@ -41,15 +41,19 @@ public class TaskQueue
 
         foreach (var t in Tasks)
         {
-            if (day.HasCapacityFor(t))
+            var currentTask = t;
+            while (currentTask.HasRemainingEffort())
             {
-                day.ScheduleTask(t);
-            }
-            else
-            {
-                day = day.NextDay();
-                day.ScheduleTask(t);
-                tasksPerDay.Add(day);
+                if (day.HasCapacityFor(t))
+                {
+                    currentTask = day.ScheduleTask(t);
+                }
+                else
+                {
+                    day = day.NextDay();
+                    currentTask = day.ScheduleTask(currentTask);
+                    tasksPerDay.Add(day);
+                }                
             }
         }
 
@@ -58,5 +62,5 @@ public class TaskQueue
 
     public Guid Id { get; private set; }
     public Duration Capacity { get; private set; }
-    public List<IWorkable> Tasks { get; private set; }
+    public List<IWorkable> Tasks { get; internal set; }
 }

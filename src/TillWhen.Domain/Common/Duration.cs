@@ -7,7 +7,7 @@ public record Duration
 {
     private readonly TimeSpan _timespan;
 
-    public static Duration Empty() => new();
+    public static Duration Zero() => new();
     public static Duration Create(string value) => new(value);
 
     internal Duration()

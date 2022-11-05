@@ -1,7 +1,11 @@
+using TillWhen.Domain.Aggregates.ProjectAggregate;
+
 namespace TillWhen.Domain.Common;
 
 public interface IWorkable
 {
     Duration Duration { get; }
-    void ReduceEffortBy(Duration capacity);
+    Duration ScheduledDuration { get; }
+    Project ScheduleEffortBy(Duration scheduledEffort);
+    bool HasRemainingEffort();
 }

@@ -17,7 +17,7 @@ public partial class CalculateQueueDurationTests
             .AddSteps(
                 _ => GivenAnInexistentQueue())
             .AddAsyncSteps(_ => WhenTheActionIsExecuted())
-            .AddSteps(_ => TheDurationShouldBe(Duration.Empty()))
+            .AddSteps(_ => TheDurationShouldBe(Duration.Zero()))
             .RunAsync();
     }
     
@@ -28,7 +28,7 @@ public partial class CalculateQueueDurationTests
             .AddSteps(
                 _ => GivenAQueueWithNoProjects())
             .AddAsyncSteps(_ => WhenTheActionIsExecuted())
-            .AddSteps(_ => TheDurationShouldBe(Duration.Empty()))
+            .AddSteps(_ => TheDurationShouldBe(Duration.Zero()))
             .RunAsync();
     }
     

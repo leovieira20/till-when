@@ -2,23 +2,29 @@ using System;
 using FluentAssertions;
 using TillWhen.Domain.Aggregates.ProjectAggregate;
 using TillWhen.Domain.Aggregates.QueueAggregate;
-using TillWhen.Domain.Common;
 using Xunit;
 
 namespace TillWhen.Domain.Tests.Unit.Aggregates.Queues;
 
 public class QueueDayTests
 {
+    private readonly QueueDay _queueDay;
+
+    public QueueDayTests()
+    {
+        _queueDay = QueueDay.Empty();
+    }
+
     [Fact]
     public void CanIncludeOneMoreTask()
     {
         var existingTask = Project.Create(Guid.NewGuid().ToString(), "1h");
-        
-        var queueDay = new QueueDay(DateTime.UtcNow) { Tasks = new() { existingTask } };
+
+        _queueDay.ScheduleTask(existingTask);
 
         var extraTask = Project.Create(Guid.NewGuid().ToString(), "1h");
         
-        queueDay.HasCapacityFor(extraTask).Should().BeTrue();
+        _queueDay.HasCapacityFor(extraTask).Should().BeTrue();
     }
     
     [Fact]
@@ -26,22 +32,21 @@ public class QueueDayTests
     {
         var existingTask = Project.Create(Guid.NewGuid().ToString(), "24h");
         
-        var queueDay = new QueueDay(DateTime.UtcNow) { Tasks = new() { existingTask } };
+        _queueDay.ScheduleTask(existingTask);
 
         var extraTask = Project.Create(Guid.NewGuid().ToString(), "1h");
         
-        queueDay.HasCapacityFor(extraTask).Should().BeFalse();
+        _queueDay.HasCapacityFor(extraTask).Should().BeFalse();
     }
 
     [Fact]
     public void ReducesTasksRemainingEffort()
     {
         var task = Project.Create(Guid.NewGuid().ToString(), "1h");
+
+        _queueDay.ScheduleTask(task);
         
-        var queueDay = QueueDay.Empty();
-        
-        queueDay.ScheduleTask(task);
-        
-        task.RemainingEffort.Should().Be(Duration.Empty());
+        task.ScheduledEffort.Hours.Should().Be(1);
+        task.RemainingEffort.Hours.Should().Be(0);
     }
 }

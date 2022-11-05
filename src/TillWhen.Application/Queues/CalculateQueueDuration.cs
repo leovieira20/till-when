@@ -20,7 +20,7 @@ public static class CalculateQueueDuration
             var queue = await _repository.GetAsync(request.QueueId);
             if (queue == null)
             {
-                return new(Duration.Empty());
+                return new(Duration.Zero());
             }
             
             var duration = queue.CalculateDuration();
