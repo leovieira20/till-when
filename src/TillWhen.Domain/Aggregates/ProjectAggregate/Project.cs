@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using TillWhen.Domain.Common;
 
 namespace TillWhen.Domain.Aggregates.ProjectAggregate;
@@ -46,11 +45,6 @@ public class Project : IWorkable
         return Create(Title, Category, RemainingEffort);
     }
     
-    public double GetEstimate()
-    {
-        throw new NotImplementedException();
-    }
-
     public Guid Id { get; set; }
 
     private DateTime StartingDate { get; init; }
@@ -59,10 +53,8 @@ public class Project : IWorkable
 
     public string Category { get; private set; }
 
-
-    public string Status { get; set; }
+    
     public Duration Duration { get; private set; }
     public Duration RemainingEffort { get; set; }
     public Duration ScheduledEffort { get; set; } = Duration.Zero();
-    private List<ProjectTask> Tasks { get; } = new();
 }
