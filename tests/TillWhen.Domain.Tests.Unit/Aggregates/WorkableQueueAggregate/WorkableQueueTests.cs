@@ -26,9 +26,9 @@ public class WorkableQueueTests
         var days = _sut.GetWorkablesPerDay();
 
         var firstDay = days.First();
-        firstDay.Workables.First().ScheduledEffort.Hours.Should().Be(16);
+        firstDay.WorkableSplits.First().Estimation.Hours.Should().Be(16);
 
         var secondDay = days.Last();
-        secondDay.Workables.First().ScheduledEffort.Hours.Should().Be(2);
+        secondDay.WorkableSplits.First().Estimation.Hours.Should().Be(2);
     }
 }

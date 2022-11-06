@@ -96,6 +96,43 @@ public class DurationTests
         total.Minutes.Should().Be(0);
     }
     
+    [Fact]
+    public void ShouldNotAllowSubtractionToGoBelowZero()
+    {
+        Duration first = "1m";
+        Duration second = "2m";
+
+        var total = first - second;
+
+        total.Days.Should().Be(0);
+        total.Hours.Should().Be(0);
+        total.Minutes.Should().Be(0);
+    }
+
+    [Fact]
+    public void ShouldReduceDurationWithRemaining()
+    {
+        Duration original = "2m";
+        Duration reduceBy = "1m";
+        
+        var (actual, remaining) = original.Reduce(reduceBy);
+
+        actual.Minutes.Should().Be(1);
+        remaining.Minutes.Should().Be(1);
+    }
+    
+    [Fact]
+    public void ShouldReduceDurationWithoutRemaining()
+    {
+        Duration original = "1m";
+        Duration reduceBy = "1m";
+        
+        var (actual, remaining) = original.Reduce(reduceBy);
+
+        actual.Minutes.Should().Be(1);
+        remaining.Minutes.Should().Be(0);
+    }
+    
     [Theory]
     [InlineData("25m", 1)]
     [InlineData("1h", 2)]

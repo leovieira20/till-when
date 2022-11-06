@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TillWhen.Domain.Aggregates.WorkableAggregate;
 using TillWhen.Domain.Common;
 
 namespace TillWhen.Domain.Aggregates.QueueAggregate;
@@ -12,7 +11,7 @@ public class QueueDay
 
     public static QueueDay Empty() => new(DateTime.UtcNow);
     public static QueueDay Empty(Duration capacity) => new(DateTime.UtcNow, capacity);
-    public static QueueDay WithWorkables(DateTime date, List<IWorkable> tasks) => new(date) { Workables = tasks };
+    public static QueueDay WithWorkables(DateTime date, List<IWorkableSplit> splits) => new(date) { WorkableSplits = splits };
 
     private QueueDay() { }
     internal QueueDay(DateTime date)
@@ -25,17 +24,17 @@ public class QueueDay
     
     public QueueDay NextDay() => new(Date.ToDateTime(TimeOnly.MinValue).AddDays(1), _capacity);
 
-    public bool HasCapacityFor(IWorkable task) => _capacity - UsedCapacity > Duration.Zero();
+    public bool HasCapacityFor(IWorkableSplit split) => _capacity - UsedCapacity > Duration.Zero();
 
-    public void ScheduleWorkable(IWorkable task)
+    public void ScheduleWorkable(IWorkableSplit split)
     {
-        Workables.Add(task);
+        WorkableSplits.Add(split);
     }
 
     private Duration UsedCapacity =>
-        Workables.Aggregate(Duration.Zero(), (duration, workable) => duration + workable.ScheduledEffort);
+        WorkableSplits.Aggregate(Duration.Zero(), (duration, workable) => duration + workable.Estimation);
 
     public DateOnly Date { get; private set; }
 
-    public List<IWorkable> Workables { get; internal init; } = new();
+    public List<IWorkableSplit> WorkableSplits { get; internal init; } = new();
 }

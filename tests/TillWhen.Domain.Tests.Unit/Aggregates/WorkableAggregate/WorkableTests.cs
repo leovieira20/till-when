@@ -14,10 +14,7 @@ public class WorkableTests
 
         var splits = workable.GetSplitsFor("1h");
 
-        splits[0].ScheduledEffort.Hours.Should().Be(1);
-        splits[0].RemainingEffort.Hours.Should().Be(1);
-        
-        splits[1].ScheduledEffort.Hours.Should().Be(1);
-        splits[1].RemainingEffort.Hours.Should().Be(0);
+        splits[0].Estimation.Hours.Should().Be(1);
+        splits[1].Estimation.Hours.Should().Be(1);
     }
 }

@@ -50,20 +50,41 @@ public record Duration
         return timespan;
     }
 
+    public (Duration adjusted, Duration remaining) Reduce(Duration reduceBy)
+    {
+        var left = this - reduceBy;
+        return left > Zero()
+            ? (reduceBy, left)
+            : (this, Zero());
+    }
 
     public static implicit operator Duration(string d) => Create(d);
 
     public static Duration operator +(Duration left, Duration right) => new(left._timespan.Add(right._timespan));
-    public static Duration operator -(Duration left, Duration right) => new(left._timespan.Subtract(right._timespan));
+
+    public static Duration operator -(Duration left, Duration right)
+    {
+        var result = left._timespan.Subtract(right._timespan);
+        return result < TimeSpan.Zero ? Zero() : new(result);
+    }
+
     public static bool operator >(Duration left, Duration right) => left._timespan > right._timespan;
+
     public static bool operator >=(Duration left, Duration right) => left._timespan >= right._timespan;
+
     public static bool operator <(Duration left, Duration right) => left._timespan < right._timespan;
+
     public static bool operator <=(Duration left, Duration right) => left._timespan <= right._timespan;
 
     public string OriginalDuration { get; set; }
+
     public int Days => _timespan.Days;
+
     public int Hours => _timespan.Hours;
+
     public int TotalHours => (int)_timespan.TotalHours;
+
     public int Minutes => _timespan.Minutes;
+
     public int Tomatoes => (int)(_timespan.TotalMinutes / 25);
 }

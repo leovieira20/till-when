@@ -23,44 +23,26 @@ public class Workable : IWorkable
         StartingDate = DateTime.UtcNow.Date;
     }
 
-    public IList<IWorkable> GetSplitsFor(Duration capacity)
+    public IList<IWorkableSplit> GetSplitsFor(Duration capacity)
     {
-        var splits = new List<IWorkable>();
+        var splits = new List<IWorkableSplit>();
 
-        IWorkable original = Create(Title, Category, Estimation);
-        while (original.HasRemainingEffort())
+        var original = Estimation;
+        while (original > Duration.Zero())
         {
-            var remaining = original.ScheduleEffortBy(capacity);
-            splits.Add(original);
+            var (adjusted, remaining) = original.Reduce(capacity);
+            splits.Add(new WorkableSplit(Title, adjusted));
             original = remaining;
         }
         
         return splits;
     }
-
+    
     public bool HasRemainingEffort()
     {
         return RemainingEffort > Duration.Zero();
     }
 
-    Duration IWorkable.ScheduledEffort => ScheduledEffort;
-
-    public IWorkable ScheduleEffortBy(Duration scheduledEffort)
-    {
-        if (scheduledEffort > RemainingEffort)
-        {
-            ScheduledEffort = RemainingEffort;
-            RemainingEffort = Duration.Zero();
-        }
-        else
-        {
-            ScheduledEffort = scheduledEffort;
-            RemainingEffort -= scheduledEffort;
-        }
-
-        return Create(Title, Category, RemainingEffort);
-    }
-    
     public Guid Id { get; set; }
 
     private DateTime StartingDate { get; init; }

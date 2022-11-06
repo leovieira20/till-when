@@ -50,13 +50,7 @@ public partial class GetQueueWorkablesTests : FeatureFixture
         var today = _response.Days.First();
 
         today.Date.Should().Be(DateOnly.FromDateTime(DateTime.UtcNow));
-        today.Workables.Should().BeEquivalentTo(workables.ToList(), config =>
-        {
-            config.Excluding(x => x.ScheduledEffort);
-            config.Excluding(x => x.RemainingEffort);
-
-            return config;
-        });
+        today.WorkableSplits.Should().BeEquivalentTo(workables.ToList());
         
         return Task.CompletedTask;
     }
@@ -67,19 +61,13 @@ public partial class GetQueueWorkablesTests : FeatureFixture
         var actualFirstDay = _response.Days.First();
 
         actualFirstDay.Date.Should().Be(expectedFirstDay.Date);
-        actualFirstDay.Workables.Should().BeEquivalentTo(actualFirstDay.Workables);
+        actualFirstDay.WorkableSplits.Should().BeEquivalentTo(actualFirstDay.WorkableSplits);
         
         var expectedSecondDay = days[1];
         var actualSecondDay = _response.Days[1];
         
         actualSecondDay.Date.Should().Be(expectedSecondDay.Date);
-        actualSecondDay.Workables.Should().BeEquivalentTo(expectedSecondDay.Workables, config =>
-        {
-            config.Excluding(x => x.ScheduledEffort);
-            config.Excluding(x => x.RemainingEffort);
-
-            return config;
-        });
+        actualSecondDay.WorkableSplits.Should().BeEquivalentTo(expectedSecondDay.WorkableSplits);
         
         return Task.CompletedTask;
     }

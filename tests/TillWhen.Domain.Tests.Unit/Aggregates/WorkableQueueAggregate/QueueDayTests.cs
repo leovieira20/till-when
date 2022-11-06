@@ -18,35 +18,34 @@ public class QueueDayTests
     [Fact]
     public void CanIncludeOneMoreWorkable()
     {
-        var existingWorkable = Workable.Create(Guid.NewGuid().ToString(), "1h");
+        var existingSplit = new WorkableSplit(Guid.NewGuid().ToString(), "1h");
 
-        _queueDay.ScheduleWorkable(existingWorkable);
+        _queueDay.ScheduleWorkable(existingSplit);
 
-        var extraWorkable = Workable.Create(Guid.NewGuid().ToString(), "1h");
+        var extraSplit = new WorkableSplit(Guid.NewGuid().ToString(), "1h");
         
-        _queueDay.HasCapacityFor(extraWorkable).Should().BeTrue();
+        _queueDay.HasCapacityFor(extraSplit).Should().BeTrue();
     }
     
     [Fact(Skip = "Skipping for now")]
     public void CannotIncludeOneMoreWorkable()
     {
-        var existingWorkable = Workable.Create(Guid.NewGuid().ToString(), "16h");
+        var existingSplit = new WorkableSplit(Guid.NewGuid().ToString(), "16h");
         
-        _queueDay.ScheduleWorkable(existingWorkable);
+        _queueDay.ScheduleWorkable(existingSplit);
 
-        var extraWorkable = Workable.Create(Guid.NewGuid().ToString(), "1h");
+        var extraSplit = new WorkableSplit(Guid.NewGuid().ToString(), "1h");
         
-        _queueDay.HasCapacityFor(extraWorkable).Should().BeFalse();
+        _queueDay.HasCapacityFor(extraSplit).Should().BeFalse();
     }
 
     [Fact(Skip = "Skipping for now")]
     public void ReducesWorkablesRemainingEffort()
     {
-        var workable = Workable.Create(Guid.NewGuid().ToString(), "1h");
+        var split = new WorkableSplit(Guid.NewGuid().ToString(), "1h");
 
-        _queueDay.ScheduleWorkable(workable);
+        _queueDay.ScheduleWorkable(split);
         
-        workable.ScheduledEffort.Hours.Should().Be(1);
-        workable.RemainingEffort.Hours.Should().Be(0);
+        split.Estimation.Hours.Should().Be(1);
     }
 }

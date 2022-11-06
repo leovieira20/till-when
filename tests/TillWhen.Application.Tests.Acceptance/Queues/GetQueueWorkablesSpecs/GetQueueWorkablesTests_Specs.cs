@@ -30,12 +30,15 @@ public partial class GetQueueWorkablesTests
         IWorkable wOne = Workable.Create("Workable 1", "16h");
         IWorkable wTwo = Workable.Create("Workable 2", "1h");
 
+        var sOne = new WorkableSplit("Workable 1", "16h");
+        var sTwo = new WorkableSplit("Workable 2", "1h");
+
         return Runner.RunScenarioAsync(
             _ => GivenAQueueWithWorkables(Table.For(wOne, wTwo)),
             _ => WhenHandlerIsExecuted(),
             _ => ThenAListOfQueueDaysIsReturned(Table.For(
-                QueueDay.WithWorkables(DateTime.UtcNow, new() { wOne }),
-                QueueDay.WithWorkables(DateTime.UtcNow.AddDays(1), new() { wTwo })
+                QueueDay.WithWorkables(DateTime.UtcNow, new() { sOne }),
+                QueueDay.WithWorkables(DateTime.UtcNow.AddDays(1), new() { sTwo })
             ))
         );
     }
@@ -43,15 +46,18 @@ public partial class GetQueueWorkablesTests
     [Scenario]
     public Task BreakQueueTasksPerDayOf8H()
     {
-        IWorkable taskOne = Workable.Create("Task 1", "8h");
-        IWorkable taskTwo = Workable.Create("Task 2", "8h");
+        IWorkable taskOne = Workable.Create("Workable 1", "8h");
+        IWorkable taskTwo = Workable.Create("Workable 2", "8h");
+        
+        var sOne = new WorkableSplit("Workable 1", "8h");
+        var sTwo = new WorkableSplit("Workable 2", "8h");
 
         return Runner.RunScenarioAsync(
             _ => GivenAQueueSetUpFor8HWithWorkables(Table.For(taskOne, taskTwo)),
             _ => WhenHandlerIsExecuted(),
             _ => ThenAListOfQueueDaysIsReturned(Table.For(
-                QueueDay.WithWorkables(DateTime.UtcNow, new() { taskOne }),
-                QueueDay.WithWorkables(DateTime.UtcNow.AddDays(1), new() { taskTwo })
+                QueueDay.WithWorkables(DateTime.UtcNow, new() { sOne }),
+                QueueDay.WithWorkables(DateTime.UtcNow.AddDays(1), new() { sTwo })
             ))
         );
     }
