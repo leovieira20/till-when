@@ -12,7 +12,7 @@ public class GetWorkableByIdMapper : IMapper
         {
             Id = workable.Id,
             Title = workable.Title,
-            Duration = workable.Duration,
+            Duration = workable.Estimation,
         };
     }
 }

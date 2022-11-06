@@ -22,7 +22,7 @@ public static class CreateWorkable
             _repository.Add(workable);
             await _repository.CommitAsync();
 
-            return new (workable.Id, workable.Duration);
+            return new (workable.Id, workable.Estimation);
         }
     }
 

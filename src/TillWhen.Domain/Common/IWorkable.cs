@@ -1,11 +1,14 @@
+using System.Collections.Generic;
 using TillWhen.Domain.Aggregates.WorkableAggregate;
 
 namespace TillWhen.Domain.Common;
 
 public interface IWorkable
 {
-    Duration Duration { get; }
-    Duration ScheduledDuration { get; }
-    Workable ScheduleEffortBy(Duration scheduledEffort);
+    Duration Estimation { get; }
+    Duration ScheduledEffort { get; }
+    Duration RemainingEffort { get; }
+    IWorkable ScheduleEffortBy(Duration scheduledEffort);
     bool HasRemainingEffort();
+    IList<IWorkable> GetSplitsFor(Duration capacity);
 }

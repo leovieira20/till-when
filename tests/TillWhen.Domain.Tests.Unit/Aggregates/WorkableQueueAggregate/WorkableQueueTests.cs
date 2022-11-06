@@ -4,7 +4,7 @@ using TillWhen.Domain.Aggregates.QueueAggregate;
 using TillWhen.Domain.Aggregates.WorkableAggregate;
 using Xunit;
 
-namespace TillWhen.Domain.Tests.Unit.Aggregates.Queues;
+namespace TillWhen.Domain.Tests.Unit.Aggregates.WorkableQueueAggregate;
 
 public class WorkableQueueTests
 {
@@ -26,9 +26,9 @@ public class WorkableQueueTests
         var days = _sut.GetWorkablesPerDay();
 
         var firstDay = days.First();
-        firstDay.Workables.First().ScheduledDuration.Hours.Should().Be(16);
+        firstDay.Workables.First().ScheduledEffort.Hours.Should().Be(16);
 
         var secondDay = days.Last();
-        secondDay.Workables.First().ScheduledDuration.Hours.Should().Be(2);
+        secondDay.Workables.First().ScheduledEffort.Hours.Should().Be(2);
     }
 }

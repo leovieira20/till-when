@@ -49,7 +49,7 @@ public partial class CreateWorkableTests : FeatureFixture
             .Received(1)
             .Add(Arg.Is<Workable>(p => 
                 p.Title == _title && 
-                p.Duration == _duration
+                p.Estimation == _duration
             ));
     }
 }

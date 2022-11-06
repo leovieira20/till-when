@@ -27,15 +27,13 @@ public class QueueDay
 
     public bool HasCapacityFor(IWorkable task) => _capacity - UsedCapacity > Duration.Zero();
 
-    public Workable ScheduleWorkable(IWorkable task)
+    public void ScheduleWorkable(IWorkable task)
     {
-        var remainingEffort = task.ScheduleEffortBy(_capacity - UsedCapacity);
         Workables.Add(task);
-        return remainingEffort;
     }
 
     private Duration UsedCapacity =>
-        Workables.Aggregate(Duration.Zero(), (duration, workable) => duration + workable.ScheduledDuration);
+        Workables.Aggregate(Duration.Zero(), (duration, workable) => duration + workable.ScheduledEffort);
 
     public DateOnly Date { get; private set; }
 

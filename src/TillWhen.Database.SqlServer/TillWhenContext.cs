@@ -28,7 +28,7 @@ public class TillWhenContext : DbContext
         
         modelBuilder
             .Entity<Workable>()
-            .OwnsOne(x => x.Duration);
+            .OwnsOne(x => x.Estimation);
     }
 
     public DbSet<Workable> Workables { get; set; }

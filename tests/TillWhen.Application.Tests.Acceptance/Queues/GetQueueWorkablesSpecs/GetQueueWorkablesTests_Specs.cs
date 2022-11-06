@@ -14,8 +14,8 @@ public partial class GetQueueWorkablesTests
     [Scenario]
     public Task ListQueueWorkables()
     {
-        IWorkable wOne = Workable.Create("Task 1", "1h");
-        IWorkable wTwo = Workable.Create("Task 2", "1h");
+        IWorkable wOne = Workable.Create("Workable 1", "1h");
+        IWorkable wTwo = Workable.Create("Workable 2", "1h");
 
         return Runner.RunScenarioAsync(
             _ => GivenAQueueWithWorkables(Table.For(wOne, wTwo)),
@@ -25,10 +25,10 @@ public partial class GetQueueWorkablesTests
     }
 
     [Scenario]
-    public Task BreakQueueTasksPerDayOf16H()
+    public Task BreakQueueWorkablesPerDayOf16H()
     {
-        IWorkable wOne = Workable.Create("Task 1", "16h");
-        IWorkable wTwo = Workable.Create("Task 2", "1h");
+        IWorkable wOne = Workable.Create("Workable 1", "16h");
+        IWorkable wTwo = Workable.Create("Workable 2", "1h");
 
         return Runner.RunScenarioAsync(
             _ => GivenAQueueWithWorkables(Table.For(wOne, wTwo)),

@@ -31,29 +31,27 @@ public class WorkableQueue
         }
 
         return Workables
-            .Aggregate(Duration.Zero(), (current, p) => current + p.Duration);
+            .Aggregate(Duration.Zero(), (current, p) => current + p.Estimation);
     }
 
     public List<QueueDay> GetWorkablesPerDay()
     {
+        var workableSplits = Workables.SelectMany(x => x.GetSplitsFor(Capacity));
+        
         var day = QueueDay.Empty(Capacity);
         var workablesPerDay = new List<QueueDay> { day };
 
-        foreach (var w in Workables)
+        foreach (var w in workableSplits)
         {
-            var currentWorkable = w;
-            while (currentWorkable.HasRemainingEffort())
+            if (day.HasCapacityFor(w))
             {
-                if (day.HasCapacityFor(w))
-                {
-                    currentWorkable = day.ScheduleWorkable(w);
-                }
-                else
-                {
-                    day = day.NextDay();
-                    currentWorkable = day.ScheduleWorkable(currentWorkable);
-                    workablesPerDay.Add(day);
-                }                
+                day.ScheduleWorkable(w);
+            }
+            else
+            {
+                day = day.NextDay();
+                day.ScheduleWorkable(w);
+                workablesPerDay.Add(day);
             }
         }
 

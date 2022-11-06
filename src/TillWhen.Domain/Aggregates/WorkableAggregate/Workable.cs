@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TillWhen.Domain.Common;
 
 namespace TillWhen.Domain.Aggregates.WorkableAggregate;
@@ -13,13 +14,28 @@ public class Workable : IWorkable
     {
     }
 
-    private Workable(string title, string category, Duration duration)
+    private Workable(string title, string category, Duration estimation)
     {
         Title = title;
         Category = category;
-        Duration = duration;
-        RemainingEffort = duration;
+        Estimation = estimation;
+        RemainingEffort = estimation;
         StartingDate = DateTime.UtcNow.Date;
+    }
+
+    public IList<IWorkable> GetSplitsFor(Duration capacity)
+    {
+        var splits = new List<IWorkable>();
+
+        IWorkable original = Create(Title, Category, Estimation);
+        while (original.HasRemainingEffort())
+        {
+            var remaining = original.ScheduleEffortBy(capacity);
+            splits.Add(original);
+            original = remaining;
+        }
+        
+        return splits;
     }
 
     public bool HasRemainingEffort()
@@ -27,9 +43,9 @@ public class Workable : IWorkable
         return RemainingEffort > Duration.Zero();
     }
 
-    public Duration ScheduledDuration => ScheduledEffort;
+    Duration IWorkable.ScheduledEffort => ScheduledEffort;
 
-    public Workable ScheduleEffortBy(Duration scheduledEffort)
+    public IWorkable ScheduleEffortBy(Duration scheduledEffort)
     {
         if (scheduledEffort > RemainingEffort)
         {
@@ -54,7 +70,7 @@ public class Workable : IWorkable
     public string Category { get; private set; }
 
     
-    public Duration Duration { get; private set; }
+    public Duration Estimation { get; private set; }
     public Duration RemainingEffort { get; set; }
     public Duration ScheduledEffort { get; set; } = Duration.Zero();
 }
