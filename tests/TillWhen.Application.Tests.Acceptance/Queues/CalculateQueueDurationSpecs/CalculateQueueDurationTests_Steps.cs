@@ -20,26 +20,31 @@ public partial class CalculateQueueDurationTests : FeatureFixture
         _sut = new(_queueRepository);
     }
     
-    private void GivenAnInexistentQueue()
+    private Task GivenAnInexistentQueue()
     {
         _queueRepository
             .GetAsync(Arg.Any<Guid>())
             .ReturnsNullForAnyArgs();
 
+        return Task.CompletedTask;
     }
     
-    private void GivenAQueueWithNoWorkables()
+    private Task GivenAQueueWithNoWorkables()
     {
         _queueRepository
             .GetAsync(Arg.Any<Guid>())
             .ReturnsForAnyArgs(WorkableQueue.Empty());
+        
+        return Task.CompletedTask;
     }
 
-    private void GivenAQueueWithWorkables(InputTable<IWorkable> projects)
+    private Task GivenAQueueWithWorkables(InputTable<IWorkable> projects)
     {
         _queueRepository
             .GetAsync(Arg.Any<Guid>())
             .ReturnsForAnyArgs(WorkableQueue.WithWorkables(projects.ToList()));
+        
+        return Task.CompletedTask;
     }
 
     private async Task WhenTheActionIsExecuted()
@@ -47,10 +52,12 @@ public partial class CalculateQueueDurationTests : FeatureFixture
         _result = await _sut.Handle(new(Guid.NewGuid()), CancellationToken.None);
     }
 
-    private void TheDurationShouldBe(Duration duration)
+    private Task TheDurationShouldBe(Duration duration)
     {
         _result.Duration.Days.Should().Be(duration.Days);
         _result.Duration.Hours.Should().Be(duration.Hours);
         _result.Duration.Minutes.Should().Be(duration.Minutes);
+        
+        return Task.CompletedTask;
     }
 }

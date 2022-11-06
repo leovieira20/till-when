@@ -21,10 +21,12 @@ public partial class CreateWorkableTests : FeatureFixture
         _sut = new(_workableRepository);
     }
     
-    private void GivenValidWorkableSpecs()
+    private Task GivenValidWorkableSpecs()
     {
         _title = "Workable 1";
         _duration = "1d 2h 3m";
+
+        return Task.CompletedTask;
     }
 
     private async Task WhenActionIsExecuted()
@@ -36,7 +38,7 @@ public partial class CreateWorkableTests : FeatureFixture
         }, CancellationToken.None);
     }
 
-    private void ThenWorkableIsCreated()
+    private Task ThenWorkableIsCreated()
     {
         _response.Duration.Should().BeEquivalentTo(new
         {
@@ -51,5 +53,7 @@ public partial class CreateWorkableTests : FeatureFixture
                 p.Title == _title && 
                 p.Estimation == _duration
             ));
+        
+        return Task.CompletedTask;
     }
 }

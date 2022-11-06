@@ -13,50 +13,44 @@ public partial class CalculateQueueDurationTests
     [Scenario]
     public async Task DurationForAnInexistentQueue()
     {
-        await Runner
-            .AddSteps(
-                _ => GivenAnInexistentQueue())
-            .AddAsyncSteps(_ => WhenTheActionIsExecuted())
-            .AddSteps(_ => TheDurationShouldBe(Duration.Zero()))
-            .RunAsync();
+        await Runner.RunScenarioAsync(
+            _ => GivenAnInexistentQueue(),
+            _ => WhenTheActionIsExecuted(),
+            _ => TheDurationShouldBe(Duration.Zero())
+        );
     }
-    
+
     [Scenario]
     public async Task DurationForAnEmptyQueue()
     {
-        await Runner
-            .AddSteps(
-                _ => GivenAQueueWithNoWorkables())
-            .AddAsyncSteps(_ => WhenTheActionIsExecuted())
-            .AddSteps(_ => TheDurationShouldBe(Duration.Zero()))
-            .RunAsync();
+        await Runner.RunScenarioAsync(
+            _ => GivenAQueueWithNoWorkables(),
+            _ => WhenTheActionIsExecuted(),
+            _ => TheDurationShouldBe(Duration.Zero())
+        );
     }
-    
+
     [Scenario]
     public async Task CalculateDurationForOneWorkable()
     {
-        await Runner
-            .AddSteps(
-                _ => GivenAQueueWithWorkables(Table.For(
-                    (IWorkable)Workable.Create("Workable 01", "1d")
-                )))
-            .AddAsyncSteps(_ => WhenTheActionIsExecuted())
-            .AddSteps(_ => TheDurationShouldBe("1d"))
-            .RunAsync();
+        await Runner.RunScenarioAsync(
+            _ => GivenAQueueWithWorkables(Table.For(
+                (IWorkable)Workable.Create("Workable 01", "1d")
+            )),
+            _ => WhenTheActionIsExecuted(),
+            _ => TheDurationShouldBe("1d"));
     }
-    
+
     [Scenario]
     public async Task CalculateDurationForMultipleWorkables()
     {
-        await Runner
-            .AddSteps(
-                _ => GivenAQueueWithWorkables(Table.For(
-                    (IWorkable) Workable.Create("Workable 01", "1d"),
-                    Workable.Create("Workable 01", "2h"),
-                    Workable.Create("Workable 01", "3m")
-                )))
-            .AddAsyncSteps(_ => WhenTheActionIsExecuted())
-            .AddSteps(_ => TheDurationShouldBe("1d 2h 3m"))
-            .RunAsync();
+        await Runner.RunScenarioAsync(
+            _ => GivenAQueueWithWorkables(Table.For(
+                (IWorkable)Workable.Create("Workable 01", "1d"),
+                Workable.Create("Workable 01", "2h"),
+                Workable.Create("Workable 01", "3m")
+            )),
+            _ => WhenTheActionIsExecuted(),
+            _ => TheDurationShouldBe("1d 2h 3m"));
     }
 }

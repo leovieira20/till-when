@@ -10,16 +10,10 @@ public partial class CreateWorkableTests
     [Scenario]
     public async Task ValidWorkable()
     {
-        await Runner
-            .AddSteps(
-                _ => GivenValidWorkableSpecs()
-            )
-            .AddAsyncSteps(
-                _ => WhenActionIsExecuted()
-            )
-            .AddSteps(
-                _ => ThenWorkableIsCreated()
-            )
-            .RunAsync();
+        await Runner.RunScenarioAsync(
+            _ => GivenValidWorkableSpecs(),
+            _ => WhenActionIsExecuted(),
+            _ => ThenWorkableIsCreated()
+        );
     }
 }
