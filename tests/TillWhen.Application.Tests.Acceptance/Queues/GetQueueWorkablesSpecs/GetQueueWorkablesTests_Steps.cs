@@ -2,6 +2,7 @@ using FluentAssertions;
 using LightBDD.Framework.Parameters;
 using LightBDD.XUnit2;
 using NSubstitute;
+using OneOf;
 using TillWhen.Application.Queues;
 using TillWhen.Domain.Aggregates.QueueAggregate;
 using TillWhen.Domain.Common;
@@ -10,7 +11,7 @@ namespace TillWhen.Application.Tests.Acceptance.Queues.GetQueueWorkablesSpecs;
 
 public partial class GetQueueWorkablesTests : FeatureFixture
 {
-    private GetQueueWorkables.Response _response = null!;
+    private OneOf<List<QueueDay>> _response = null!;
     private readonly IWorkableQueueRepository _queueRepository;
     private readonly GetQueueWorkables.Handler _sut;
 
@@ -47,7 +48,7 @@ public partial class GetQueueWorkablesTests : FeatureFixture
 
     private Task ThenAListOfTasksForTodayIsReturned(InputTable<IWorkable> workables)
     {
-        var today = _response.Days.First();
+        var today = _response.AsT0.First();
 
         today.Date.Should().Be(DateOnly.FromDateTime(DateTime.UtcNow));
         today.WorkableSplits.Should().BeEquivalentTo(workables.ToList());
@@ -58,13 +59,13 @@ public partial class GetQueueWorkablesTests : FeatureFixture
     private Task ThenAListOfQueueDaysIsReturned(InputTable<QueueDay> days)
     {
         var expectedFirstDay = days.First();
-        var actualFirstDay = _response.Days.First();
+        var actualFirstDay = _response.AsT0.First();
 
         actualFirstDay.Date.Should().Be(expectedFirstDay.Date);
         actualFirstDay.WorkableSplits.Should().BeEquivalentTo(actualFirstDay.WorkableSplits);
         
         var expectedSecondDay = days[1];
-        var actualSecondDay = _response.Days[1];
+        var actualSecondDay = _response.AsT0[1];
         
         actualSecondDay.Date.Should().Be(expectedSecondDay.Date);
         actualSecondDay.WorkableSplits.Should().BeEquivalentTo(expectedSecondDay.WorkableSplits);

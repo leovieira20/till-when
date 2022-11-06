@@ -1,6 +1,7 @@
 using FluentAssertions;
 using LightBDD.XUnit2;
 using NSubstitute;
+using OneOf;
 using TillWhen.Application.Workables;
 using TillWhen.Domain.Aggregates.WorkableAggregate;
 using TillWhen.Domain.Common;
@@ -13,7 +14,7 @@ public partial class CreateWorkableTests : FeatureFixture
     private readonly IWorkableRepository _workableRepository;
     private string _title = null!;
     private Duration _duration = null!;
-    private CreateWorkable.Response _response = null!;
+    private OneOf<(Guid, Duration)> _response;
 
     public CreateWorkableTests()
     {
@@ -40,7 +41,7 @@ public partial class CreateWorkableTests : FeatureFixture
 
     private Task ThenWorkableIsCreated()
     {
-        _response.Duration.Should().BeEquivalentTo(new
+        _response.AsT0.Item2.Should().BeEquivalentTo(new
         {
             Days = 1,
             Hours = 2,

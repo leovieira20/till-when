@@ -23,10 +23,13 @@ public class CreateWorkableEndpoint : Endpoint<CreateWorkableRequest, CreateWork
     {
         var response = await _mediator.Send(Map.ToEntity(req), ct);
 
-        await SendCreatedAtAsync(
-            GetWorkableByIdEndpoint.Name,
-            new { response.Id },
-            new(response.Id),
-            cancellation: ct);
+        await response.Match(async tuple =>
+        {
+            await SendCreatedAtAsync(
+                GetWorkableByIdEndpoint.Name,
+                new { tuple.Item1 },
+                new(tuple.Item1),
+                cancellation: ct);
+        });
     }
 }

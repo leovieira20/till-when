@@ -1,4 +1,5 @@
 using MediatR;
+using OneOf;
 using TillWhen.Domain.Aggregates.WorkableAggregate;
 using TillWhen.Domain.Common;
 
@@ -6,7 +7,7 @@ namespace TillWhen.Application.Workables;
 
 public static class CreateWorkable
 {
-    public class Handler : IRequestHandler<Command, Response>
+    public class Handler : IRequestHandler<Command, OneOf<(Guid, Duration)>>
     {
         private readonly IWorkableRepository _repository;
 
@@ -15,18 +16,16 @@ public static class CreateWorkable
             _repository = repository;
         }
         
-        public async Task<Response> Handle(Command command, CancellationToken cancellationToken)
+        public async Task<OneOf<(Guid, Duration)>> Handle(Command command, CancellationToken cancellationToken)
         {
             var workable = Workable.Create(command.Title, command.Duration);
             
             _repository.Add(workable);
             await _repository.CommitAsync();
 
-            return new (workable.Id, workable.Estimation);
+            return OneOf<(Guid, Duration)>.FromT0((workable.Id, workable.Estimation));
         }
     }
 
-    public record Command(string Title, Duration Duration) : IRequest<Response>;
-
-    public record Response(Guid Id, Duration Duration);
+    public record Command(string Title, Duration Duration) : IRequest<OneOf<(Guid, Duration)>>;
 }

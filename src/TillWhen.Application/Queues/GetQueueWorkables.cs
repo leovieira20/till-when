@@ -1,13 +1,12 @@
 using MediatR;
+using OneOf;
 using TillWhen.Domain.Aggregates.QueueAggregate;
 
 namespace TillWhen.Application.Queues;
 
 public static class GetQueueWorkables
 {
-    public record Request : IRequest<Response>;
-    
-    internal class Handler : IRequestHandler<Request, Response>
+    internal class Handler : IRequestHandler<Request, OneOf<List<QueueDay>>>
     {
         private readonly IWorkableQueueRepository _queueRepository;
 
@@ -16,13 +15,13 @@ public static class GetQueueWorkables
             _queueRepository = queueRepository;
         }
 
-        public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
+        public async Task<OneOf<List<QueueDay>>> Handle(Request request, CancellationToken cancellationToken)
         {
             var queue = await _queueRepository.GetAsync(Guid.Empty);
 
-            return new(queue.GetWorkablesPerDay());
+            return OneOf<List<QueueDay>>.FromT0(queue.GetWorkablesPerDay());
         }
     }
 
-    public record Response(List<QueueDay> Days);
+    public record Request : IRequest<OneOf<List<QueueDay>>>;
 }

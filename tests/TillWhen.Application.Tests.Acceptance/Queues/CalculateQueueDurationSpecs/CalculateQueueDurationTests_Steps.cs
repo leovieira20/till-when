@@ -3,6 +3,7 @@ using LightBDD.Framework.Parameters;
 using LightBDD.XUnit2;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using OneOf;
 using TillWhen.Domain.Aggregates.QueueAggregate;
 using TillWhen.Domain.Common;
 
@@ -11,7 +12,7 @@ namespace TillWhen.Application.Tests.Acceptance.Queues.CalculateQueueDurationSpe
 public partial class CalculateQueueDurationTests : FeatureFixture
 {
     private readonly Application.Queues.CalculateQueueDuration.Handler _sut;
-    private Application.Queues.CalculateQueueDuration.Response _result = null!;
+    private OneOf<Duration> _result = null!;
     private readonly IWorkableQueueRepository _queueRepository;
 
     public CalculateQueueDurationTests()
@@ -54,9 +55,9 @@ public partial class CalculateQueueDurationTests : FeatureFixture
 
     private Task TheDurationShouldBe(Duration duration)
     {
-        _result.Duration.Days.Should().Be(duration.Days);
-        _result.Duration.Hours.Should().Be(duration.Hours);
-        _result.Duration.Minutes.Should().Be(duration.Minutes);
+        _result.AsT0.Days.Should().Be(duration.Days);
+        _result.AsT0.Hours.Should().Be(duration.Hours);
+        _result.AsT0.Minutes.Should().Be(duration.Minutes);
         
         return Task.CompletedTask;
     }

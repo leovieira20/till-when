@@ -23,6 +23,9 @@ public class GetQueueDurationEndpoint : Endpoint<GetQueueDurationRequest, GetQue
     {
         var response = await _mediator.Send(new CalculateQueueDuration.Query(req.QueueId), ct);
 
-        await SendAsync(new(response.Duration), cancellation: ct);
+        await response.Match(async duration =>
+        {
+            await SendAsync(new(duration), cancellation: ct);
+        });
     }
 }
