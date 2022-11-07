@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using TillWhen.Domain.Aggregates.QueueAggregate;
-using TillWhen.Domain.Aggregates.WorkableAggregate;
 
 namespace TillWhen.Database.SqlServer.Repositories;
 

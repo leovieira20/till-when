@@ -8,7 +8,8 @@ public class Workable : IWorkable
 {
     public static Workable Create(string title, Duration duration) => new(title, duration);
     public static Workable Create(string title, string category, Duration duration) => new(title, category, duration);
-    
+
+    private Workable() { }
     private Workable(string title, Duration duration)
         : this(title, string.Empty, duration)
     {
@@ -20,7 +21,6 @@ public class Workable : IWorkable
         Category = category;
         Estimation = estimation;
         RemainingEffort = estimation;
-        StartingDate = DateTime.UtcNow.Date;
     }
 
     public IList<IWorkableSplit> GetSplitsFor(Duration capacity)
@@ -37,22 +37,10 @@ public class Workable : IWorkable
         
         return splits;
     }
-    
-    public bool HasRemainingEffort()
-    {
-        return RemainingEffort > Duration.Zero();
-    }
 
     public Guid Id { get; set; }
-
-    private DateTime StartingDate { get; init; }
-
     public string Title { get; private set; }
-
     public string Category { get; private set; }
-
-    
     public Duration Estimation { get; private set; }
-    public Duration RemainingEffort { get; set; }
-    public Duration ScheduledEffort { get; set; } = Duration.Zero();
+    public Duration RemainingEffort { get; private set; }
 }

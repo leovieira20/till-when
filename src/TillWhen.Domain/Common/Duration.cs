@@ -76,15 +76,10 @@ public record Duration
 
     public static bool operator <=(Duration left, Duration right) => left._timespan <= right._timespan;
 
-    public string OriginalDuration { get; set; }
-
+    public string OriginalDuration { get; private set; }
     public int Days => _timespan.Days;
-
     public int Hours => _timespan.Hours;
-
     public int TotalHours => (int)_timespan.TotalHours;
-
     public int Minutes => _timespan.Minutes;
-
     public int Tomatoes => (int)(_timespan.TotalMinutes / 25);
 }
