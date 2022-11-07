@@ -7,21 +7,28 @@ namespace TillWhen.Domain.Aggregates.QueueAggregate;
 
 public class WorkableQueue
 {
-    private WorkableQueue()
-        : this("16h")
-    {
-    }
-
-    private WorkableQueue(Duration capacity)
-    {
-        Capacity = capacity;
-        Workables = new();
-    }
-
     public static WorkableQueue Empty() => new();
-    public static WorkableQueue WithWorkables(List<IWorkable> workables) => new() { Workables = workables };
-    public static WorkableQueue WithCapacityAndWorkables(Duration capacity, List<IWorkable> workables) =>
+
+    public static WorkableQueue WithWorkables(List<WorkableBase> workables)
+    {
+        var queue = new WorkableQueue
+        {
+            Workables = workables
+        };
+
+        foreach (var w in workables)
+        {
+            w.WorkableQueueId = queue.Id;
+        }
+
+        return queue;
+    }
+
+    public static WorkableQueue WithCapacityAndWorkables(Duration capacity, List<WorkableBase> workables) =>
         new(capacity) { Workables = workables };
+    
+    private WorkableQueue() => Id = Guid.NewGuid();
+    private WorkableQueue(Duration capacity) : this() => Capacity = capacity;
 
     public Duration CalculateDuration()
     {
@@ -37,7 +44,7 @@ public class WorkableQueue
     public List<QueueDay> GetWorkablesPerDay()
     {
         var workableSplits = Workables.SelectMany(x => x.GetSplitsFor(Capacity));
-        
+
         var day = QueueDay.Empty(Capacity);
         var workablesPerDay = new List<QueueDay> { day };
 
@@ -59,6 +66,6 @@ public class WorkableQueue
     }
 
     public Guid Id { get; private set; }
-    public Duration Capacity { get; private set; }
-    public List<IWorkable> Workables { get; internal set; }
+    public Duration Capacity { get; private set; } = "16h";
+    public List<WorkableBase> Workables { get; internal set; } = new();
 }

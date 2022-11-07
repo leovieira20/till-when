@@ -14,21 +14,23 @@ public partial class GetQueueWorkablesTests
     [Scenario]
     public Task ListQueueWorkables()
     {
-        IWorkable wOne = Workable.Create("Workable 1", "1h");
-        IWorkable wTwo = Workable.Create("Workable 2", "1h");
+        WorkableBase wOne = Workable.Create("Workable 1", "1h");
+        WorkableBase wTwo = Workable.Create("Workable 2", "1h");
 
         return Runner.RunScenarioAsync(
             _ => GivenAQueueWithWorkables(Table.For(wOne, wTwo)),
             _ => WhenHandlerIsExecuted(),
-            _ => ThenAListOfTasksForTodayIsReturned(Table.For(wOne, wTwo))
+            _ => ThenAListOfTasksForTodayIsReturned(Table.For(
+                new WorkableSplit("Workable 1", "1h"), 
+                new WorkableSplit("Workable 2", "1h")))
         );
     }
 
     [Scenario]
     public Task BreakQueueWorkablesPerDayOf16H()
     {
-        IWorkable wOne = Workable.Create("Workable 1", "16h");
-        IWorkable wTwo = Workable.Create("Workable 2", "1h");
+        WorkableBase wOne = Workable.Create("Workable 1", "16h");
+        WorkableBase wTwo = Workable.Create("Workable 2", "1h");
 
         var sOne = new WorkableSplit("Workable 1", "16h");
         var sTwo = new WorkableSplit("Workable 2", "1h");
@@ -46,8 +48,8 @@ public partial class GetQueueWorkablesTests
     [Scenario]
     public Task BreakQueueTasksPerDayOf8H()
     {
-        IWorkable taskOne = Workable.Create("Workable 1", "8h");
-        IWorkable taskTwo = Workable.Create("Workable 2", "8h");
+        WorkableBase taskOne = Workable.Create("Workable 1", "8h");
+        WorkableBase taskTwo = Workable.Create("Workable 2", "8h");
         
         var sOne = new WorkableSplit("Workable 1", "8h");
         var sTwo = new WorkableSplit("Workable 2", "8h");

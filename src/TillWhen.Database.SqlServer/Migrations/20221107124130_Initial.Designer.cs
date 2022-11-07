@@ -12,7 +12,7 @@ using TillWhen.Database.SqlServer;
 namespace TillWhen.Database.SqlServer.Migrations
 {
     [DbContext(typeof(TillWhenContext))]
-    [Migration("20221107103347_Initial")]
+    [Migration("20221107124130_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,7 +35,7 @@ namespace TillWhen.Database.SqlServer.Migrations
                     b.ToTable("WorkableQueues");
                 });
 
-            modelBuilder.Entity("TillWhen.Domain.Aggregates.WorkableAggregate.Workable", b =>
+            modelBuilder.Entity("TillWhen.Domain.Common.WorkableBase", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,32 +51,63 @@ namespace TillWhen.Database.SqlServer.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<Guid>("WorkableQueueId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("workable_type")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Workables");
+                    b.HasIndex("WorkableQueueId");
+
+                    b.ToTable("WorkableBase");
+
+                    b.HasDiscriminator<string>("workable_type").HasValue("WorkableBase");
                 });
 
             modelBuilder.Entity("TillWhen.Domain.Aggregates.WorkableAggregate.Workable", b =>
                 {
+                    b.HasBaseType("TillWhen.Domain.Common.WorkableBase");
+
+                    b.HasDiscriminator().HasValue("workable_base");
+                });
+
+            modelBuilder.Entity("TillWhen.Domain.Common.WorkableBase", b =>
+                {
+                    b.HasOne("TillWhen.Domain.Aggregates.QueueAggregate.WorkableQueue", null)
+                        .WithMany("Workables")
+                        .HasForeignKey("WorkableQueueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("TillWhen.Domain.Common.Duration", "Estimation", b1 =>
                         {
-                            b1.Property<Guid>("WorkableId")
+                            b1.Property<Guid>("WorkableBaseId")
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("OriginalDuration")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)");
+                                .HasMaxLength(15)
+                                .HasColumnType("nvarchar(15)");
 
-                            b1.HasKey("WorkableId");
+                            b1.HasKey("WorkableBaseId");
 
-                            b1.ToTable("Workables");
+                            b1.ToTable("WorkableBase");
 
                             b1.WithOwner()
-                                .HasForeignKey("WorkableId");
+                                .HasForeignKey("WorkableBaseId");
                         });
 
                     b.Navigation("Estimation")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("TillWhen.Domain.Aggregates.QueueAggregate.WorkableQueue", b =>
+                {
+                    b.Navigation("Workables");
                 });
 #pragma warning restore 612, 618
         }

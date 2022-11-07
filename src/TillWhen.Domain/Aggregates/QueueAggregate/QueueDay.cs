@@ -18,11 +18,11 @@ public class QueueDay
         : this(date, "16h") { }
     private QueueDay(DateTime date, Duration capacity)
     {
-        Date = DateOnly.FromDateTime(date);
+        Date = date;
         _capacity = capacity;
     }
     
-    public QueueDay NextDay() => new(Date.ToDateTime(TimeOnly.MinValue).AddDays(1), _capacity);
+    public QueueDay NextDay() => new(Date.AddDays(1), _capacity);
 
     public bool HasCapacityFor(IWorkableSplit split) => _capacity - UsedCapacity > Duration.Zero();
 
@@ -34,7 +34,7 @@ public class QueueDay
     private Duration UsedCapacity =>
         WorkableSplits.Aggregate(Duration.Zero(), (duration, workable) => duration + workable.Estimation);
 
-    public DateOnly Date { get; private set; }
+    public DateTime Date { get; private set; }
 
     public List<IWorkableSplit> WorkableSplits { get; internal init; } = new();
 }

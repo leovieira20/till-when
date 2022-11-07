@@ -8,7 +8,7 @@ using TillWhen.Domain.Aggregates.QueueAggregate;
 using TillWhen.Domain.Aggregates.WorkableAggregate;
 using TillWhen.Domain.Common;
 
-var workables = new List<IWorkable>
+var workables = new List<WorkableBase>
 {
     Workable.Create("Specification Pattern in C#", "DDD", "1h 27m"),
     Workable.Create("Domain-Driven Design in Practice", "DDD", "4h 19m"),

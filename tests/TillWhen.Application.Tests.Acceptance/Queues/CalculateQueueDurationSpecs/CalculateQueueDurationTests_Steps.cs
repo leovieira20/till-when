@@ -39,7 +39,7 @@ public partial class CalculateQueueDurationTests : FeatureFixture
         return Task.CompletedTask;
     }
 
-    private Task GivenAQueueWithWorkables(InputTable<IWorkable> projects)
+    private Task GivenAQueueWithWorkables(InputTable<WorkableBase> projects)
     {
         _queueRepository
             .GetAsync(Arg.Any<Guid>())

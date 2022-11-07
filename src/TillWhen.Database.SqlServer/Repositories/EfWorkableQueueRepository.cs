@@ -18,7 +18,7 @@ public class EfWorkableQueueRepository : IWorkableQueueRepository
             .WorkableQueues
             .Include(x => x.Workables)
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id == requestQueueId);
+            .FirstOrDefaultAsync();
     }
     
     public void Create(WorkableQueue queue)

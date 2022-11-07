@@ -19,25 +19,20 @@ public class TillWhenContext : DbContext
     {
         modelBuilder
             .Entity<WorkableQueue>()
-            .Ignore(x => x.Capacity)
-            .Ignore(x => x.Workables);
+            .Ignore(x => x.Capacity);
         
         modelBuilder
-            .Entity<Workable>()
+            .Entity<WorkableBase>()
             .Property(x => x.Title)
             .HasMaxLength(200);
         
         modelBuilder
-            .Entity<Workable>()
+            .Entity<WorkableBase>()
             .Property(x => x.Category)
             .HasMaxLength(100);
 
         modelBuilder
-            .Entity<Workable>()
-            .Ignore(x => x.RemainingEffort);
-        
-        modelBuilder
-            .Entity<Workable>()
+            .Entity<WorkableBase>()
             .OwnsOne(x => x.Estimation, builder =>
             {
                 builder.Ignore(x => x.Days);
@@ -45,7 +40,24 @@ public class TillWhenContext : DbContext
                 builder.Ignore(x => x.TotalHours);
                 builder.Ignore(x => x.Minutes);
                 builder.Ignore(x => x.Tomatoes);
+
+                builder
+                    .Property(x => x.OriginalDuration)
+                    .HasMaxLength(15);
+
+                builder
+                    .Property(x => x.OriginalDuration)
+                    .UsePropertyAccessMode(PropertyAccessMode.Property);
             });
+        
+        modelBuilder.Entity<Workable>()
+            .HasDiscriminator<string>("workable_type")
+            .HasValue<Workable>("workable_base");
+        
+        modelBuilder
+            .Entity<Workable>()
+            .Property("workable_type")
+            .HasMaxLength(20);
     }
 
     public DbSet<Workable> Workables { get; set; }

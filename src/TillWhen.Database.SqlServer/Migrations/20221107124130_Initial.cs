@@ -21,27 +21,40 @@ namespace TillWhen.Database.SqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Workables",
+                name: "WorkableBase",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Category = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Estimation_OriginalDuration = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Estimation_OriginalDuration = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    WorkableQueueId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    workable_type = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Workables", x => x.Id);
+                    table.PrimaryKey("PK_WorkableBase", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkableBase_WorkableQueues_WorkableQueueId",
+                        column: x => x.WorkableQueueId,
+                        principalTable: "WorkableQueues",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkableBase_WorkableQueueId",
+                table: "WorkableBase",
+                column: "WorkableQueueId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "WorkableQueues");
+                name: "WorkableBase");
 
             migrationBuilder.DropTable(
-                name: "Workables");
+                name: "WorkableQueues");
         }
     }
 }

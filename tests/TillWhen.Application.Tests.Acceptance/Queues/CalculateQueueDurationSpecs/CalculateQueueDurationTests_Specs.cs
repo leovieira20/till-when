@@ -35,7 +35,7 @@ public partial class CalculateQueueDurationTests
     {
         await Runner.RunScenarioAsync(
             _ => GivenAQueueWithWorkables(Table.For(
-                (IWorkable)Workable.Create("Workable 01", "1d")
+                (WorkableBase)Workable.Create("Workable 01", "1d")
             )),
             _ => WhenTheActionIsExecuted(),
             _ => TheDurationShouldBe("1d"));
@@ -46,7 +46,7 @@ public partial class CalculateQueueDurationTests
     {
         await Runner.RunScenarioAsync(
             _ => GivenAQueueWithWorkables(Table.For(
-                (IWorkable)Workable.Create("Workable 01", "1d"),
+                (WorkableBase)Workable.Create("Workable 01", "1d"),
                 Workable.Create("Workable 01", "2h"),
                 Workable.Create("Workable 01", "3m")
             )),

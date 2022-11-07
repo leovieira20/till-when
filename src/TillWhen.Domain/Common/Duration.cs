@@ -5,17 +5,18 @@ namespace TillWhen.Domain.Common;
 
 public record Duration
 {
-    private readonly TimeSpan _timespan;
+    private TimeSpan _timespan;
+    private string _originalDuration;
 
     public static Duration Zero() => new();
     public static Duration Create(string value) => new(value);
 
-    internal Duration()
-        : this(TimeSpan.Zero)
+    private Duration()
     {
     }
 
     private Duration(TimeSpan timespan) => _timespan = timespan;
+
     private Duration(string value)
     {
         _timespan = ConvertStringDurationToTimestamp(value);
@@ -76,7 +77,16 @@ public record Duration
 
     public static bool operator <=(Duration left, Duration right) => left._timespan <= right._timespan;
 
-    public string OriginalDuration { get; private set; }
+    public string OriginalDuration
+    {
+        get => _originalDuration;
+        set
+        {
+            _originalDuration = value;
+            _timespan = ConvertStringDurationToTimestamp(value);
+        }
+    }
+
     public int Days => _timespan.Days;
     public int Hours => _timespan.Hours;
     public int TotalHours => (int)_timespan.TotalHours;
