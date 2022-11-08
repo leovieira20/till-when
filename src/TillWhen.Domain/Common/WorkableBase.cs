@@ -13,5 +13,6 @@ public abstract class WorkableBase
     public string Category { get; set; }
     public Duration Estimation { get; internal set; } = Duration.Zero();
     public Guid WorkableQueueId { get; set; }
+    public abstract void ReduceEstimationBy(Duration duration);
     public abstract IList<IWorkableSplit> GetSplitsFor(Duration capacity);
 }

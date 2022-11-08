@@ -1,5 +1,11 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/Users/leo/Library/Caches/JetBrains/Rider2022.2/resharper-host/temp/Rider/vAny/CoverageData/_TillWhen.634058555/Snapshot/snapshot.utdcvr</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=3f830c67_002Ddb45_002D41ef_002D8715_002D7924d00a073a/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="3" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Or&gt;
+    &lt;Project Location="/Users/leo/Dev/dreamsparser/TillWhen/dotnet/tests/TillWhen.Application.Tests.Acceptance" Presentation="&amp;lt;tests&amp;gt;\&amp;lt;TillWhen.Application.Tests.Acceptance&amp;gt;" /&gt;
+    &lt;Project Location="/Users/leo/Dev/dreamsparser/TillWhen/dotnet/tests/TillWhen.Domain.Tests.Unit" Presentation="&amp;lt;tests&amp;gt;\&amp;lt;TillWhen.Domain.Tests.Unit&amp;gt;" /&gt;
+  &lt;/Or&gt;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=f90f5a8f_002De089_002D4bcc_002D9aac_002D5798d2599d7e/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="1" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Or&gt;
     &lt;Project Location="/Users/leo/Dev/dreamsparser/TillWhen/dotnet/tests/TillWhen.Application.Tests.Acceptance" Presentation="&amp;lt;tests&amp;gt;\&amp;lt;TillWhen.Application.Tests.Acceptance&amp;gt;" /&gt;

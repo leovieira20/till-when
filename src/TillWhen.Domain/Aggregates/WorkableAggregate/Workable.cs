@@ -38,4 +38,9 @@ public class Workable : WorkableBase
 
         return splits;
     }
+
+    public override void ReduceEstimationBy(Duration duration)
+    {
+        Estimation -= duration;
+    }
 }
