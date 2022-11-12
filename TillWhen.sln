@@ -20,6 +20,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TillWhen.Application.Tests.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TillWhen.Helpers.DataSeed", "src\TillWhen.Helpers.DataSeed\TillWhen.Helpers.DataSeed.csproj", "{7352FF07-B7A5-4E6C-8AF1-03D3E4C9306A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipeline", "pipeline", "{01406507-62F3-4AA3-A2CD-FAB9C78458FA}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.yml = azure-pipelines.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
