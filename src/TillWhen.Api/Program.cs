@@ -25,5 +25,4 @@ app.UseFastEndpoints(config =>
 {
     
 });
-app.UseWelcomePage();
 app.Run();
