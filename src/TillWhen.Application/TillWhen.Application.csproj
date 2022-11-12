@@ -5,26 +5,20 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-    
+
     <ItemGroup>
         <InternalsVisibleTo Include="TillWhen.Application.Tests.Acceptance" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="MediatR" Version="11.0.0" />
-      <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
-      <PackageReference Include="OneOf" Version="3.0.223" />
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+        <PackageReference Include="MediatR" Version="11.0.0" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+        <PackageReference Include="OneOf" Version="3.0.223" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TillWhen.Domain\TillWhen.Domain.csproj" />
+        <ProjectReference Include="..\TillWhen.Domain\TillWhen.Domain.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Microsoft.AspNetCore">
-        <HintPath>..\..\..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\6.0.5\Microsoft.AspNetCore.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
 </Project>
