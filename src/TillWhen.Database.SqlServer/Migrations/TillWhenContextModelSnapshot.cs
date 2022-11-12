@@ -17,7 +17,7 @@ namespace TillWhen.Database.SqlServer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("ProductVersion", "6.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -31,6 +31,23 @@ namespace TillWhen.Database.SqlServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("WorkableQueues");
+                });
+
+            modelBuilder.Entity("TillWhen.Domain.Aggregates.WorkableQueueConfigurationAggregate.WorkableQueueConfiguration", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("WorkableQueueId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorkableQueueId")
+                        .IsUnique();
+
+                    b.ToTable("WorkableQueueConfigurations");
                 });
 
             modelBuilder.Entity("TillWhen.Domain.Common.WorkableBase", b =>
@@ -71,6 +88,36 @@ namespace TillWhen.Database.SqlServer.Migrations
                     b.HasBaseType("TillWhen.Domain.Common.WorkableBase");
 
                     b.HasDiscriminator().HasValue("workable_base");
+                });
+
+            modelBuilder.Entity("TillWhen.Domain.Aggregates.WorkableQueueConfigurationAggregate.WorkableQueueConfiguration", b =>
+                {
+                    b.HasOne("TillWhen.Domain.Aggregates.QueueAggregate.WorkableQueue", null)
+                        .WithOne()
+                        .HasForeignKey("TillWhen.Domain.Aggregates.WorkableQueueConfigurationAggregate.WorkableQueueConfiguration", "WorkableQueueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("TillWhen.Domain.Common.Duration", "Capacity", b1 =>
+                        {
+                            b1.Property<Guid>("WorkableQueueConfigurationId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("OriginalDuration")
+                                .IsRequired()
+                                .HasMaxLength(15)
+                                .HasColumnType("nvarchar(15)");
+
+                            b1.HasKey("WorkableQueueConfigurationId");
+
+                            b1.ToTable("WorkableQueueConfigurations");
+
+                            b1.WithOwner()
+                                .HasForeignKey("WorkableQueueConfigurationId");
+                        });
+
+                    b.Navigation("Capacity")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TillWhen.Domain.Common.WorkableBase", b =>

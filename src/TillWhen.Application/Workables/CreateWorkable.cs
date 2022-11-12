@@ -20,8 +20,8 @@ public static class CreateWorkable
         {
             var workable = Workable.Create(command.Title, command.Duration);
             
-            _repository.Add(workable);
-            await _repository.CommitAsync();
+            _repository.Create(workable);
+            await _repository.SaveAsync();
 
             return OneOf<(Guid, Duration)>.FromT0((workable.Id, workable.Estimation));
         }

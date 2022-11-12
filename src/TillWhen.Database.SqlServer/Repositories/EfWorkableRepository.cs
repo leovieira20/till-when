@@ -2,22 +2,10 @@ using TillWhen.Domain.Aggregates.WorkableAggregate;
 
 namespace TillWhen.Database.SqlServer.Repositories;
 
-internal class EfWorkableRepository : IWorkableRepository
+internal class EfWorkableRepository : EfRepositoryBase, IWorkableRepository
 {
-    private readonly TillWhenContext _context;
-
-    public EfWorkableRepository(TillWhenContext context)
+    public EfWorkableRepository(TillWhenContext context) 
+        : base(context)
     {
-        _context = context;
-    }
-    
-    public void Add(Workable workable)
-    {
-        _context.Workables.Add(workable);
-    }
-    
-    public Task CommitAsync()
-    {
-        return _context.SaveChangesAsync();
     }
 }

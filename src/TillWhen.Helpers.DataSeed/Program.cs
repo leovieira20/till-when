@@ -1,19 +1,22 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TillWhen.Database.SqlServer;
 using TillWhen.Database.SqlServer.Repositories;
 using TillWhen.Domain.Aggregates.QueueAggregate;
 using TillWhen.Domain.Aggregates.WorkableAggregate;
+using TillWhen.Domain.Aggregates.WorkableQueueConfigurationAggregate;
 using TillWhen.Domain.Common;
+
+var provider = CreateInfrastructure();
+var queueRepository = new EfWorkableQueueRepository(provider.GetRequiredService<TillWhenContext>());
+var queueConfigurationRepository = new EfWorkableQueueConfigurationRepository(provider.GetRequiredService<TillWhenContext>());
 
 var workables = new List<WorkableBase>
 {
     Workable.Create("Specification Pattern in C#", "DDD", "1h 27m"),
     Workable.Create("Domain-Driven Design in Practice", "DDD", "4h 19m"),
     Workable.Create("Applying Functional Principles in C# 6", "Code Style", "3h 28m"),
-    Workable.Create("Refactoring from Anemic Domain Model Towards a Rich One", "Code Style", "3h 36m"),
     Workable.Create("DDD and EF Core 3: Preserving Encapsulation", "DDD", "3h 39m"),
     Workable.Create("Clean Architecture: Patterns, Practices, and Principles", "Architecture", "2h 20m"),
     Workable.Create("Modern Software Architecture: Domain Models, CQRS, and Event Sourcing", "Architecture", "4h 25m"),
@@ -64,20 +67,27 @@ var workables = new List<WorkableBase>
 
 var queue = WorkableQueue.WithWorkables(workables);
 
-IConfiguration config = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json")
-    .AddEnvironmentVariables()
-    .Build();
-
-var services = new ServiceCollection()
-    .AddDbContext<TillWhenContext>(x =>
-    {
-        x.UseSqlServer(config.GetConnectionString("TillWhen"));
-    });
-
-var provider = services.BuildServiceProvider();
-
-var queueRepository = new EfWorkableQueueRepository(provider.GetRequiredService<TillWhenContext>());
-
 queueRepository.Create(queue);
 await queueRepository.CommitAsync();
+
+var queueConfiguration = new WorkableQueueConfiguration
+{
+    Capacity = "8h",
+    WorkableQueueId = queue.Id
+};
+
+queueConfigurationRepository.Create(queueConfiguration);
+await queueConfigurationRepository.SaveAsync();
+
+ServiceProvider CreateInfrastructure()
+{
+    IConfiguration config = new ConfigurationBuilder()
+        .AddJsonFile("appsettings.json")
+        .AddEnvironmentVariables()
+        .Build();
+
+    var services = new ServiceCollection()
+        .AddDbContext<TillWhenContext>(x => { x.UseSqlServer(config.GetConnectionString("TillWhen")); });
+
+    return services.BuildServiceProvider();
+}

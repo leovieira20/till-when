@@ -50,7 +50,7 @@ public partial class CreateWorkableTests : FeatureFixture
         
         _workableRepository
             .Received(1)
-            .Add(Arg.Is<Workable>(p => 
+            .Create(Arg.Is<Workable>(p => 
                 p.Title == _title && 
                 p.Estimation == _duration
             ));

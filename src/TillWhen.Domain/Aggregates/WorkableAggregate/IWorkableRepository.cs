@@ -1,9 +1,7 @@
-using System.Threading.Tasks;
+using TillWhen.Domain.Aggregates.QueueAggregate;
 
 namespace TillWhen.Domain.Aggregates.WorkableAggregate;
 
-public interface IWorkableRepository
+public interface IWorkableRepository : IRepositoryBase
 {
-    void Add(Workable workable);
-    Task CommitAsync();
 }

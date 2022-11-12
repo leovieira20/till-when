@@ -3,31 +3,23 @@ using TillWhen.Domain.Aggregates.QueueAggregate;
 
 namespace TillWhen.Database.SqlServer.Repositories;
 
-public class EfWorkableQueueRepository : IWorkableQueueRepository
+public class EfWorkableQueueRepository : EfRepositoryBase, IWorkableQueueRepository
 {
-    private readonly TillWhenContext _context;
-
-    public EfWorkableQueueRepository(TillWhenContext context)
+    public EfWorkableQueueRepository(TillWhenContext context) : base(context)
     {
-        _context = context;
     }
 
     public Task<WorkableQueue?> GetAsync(Guid requestQueueId)
     {
-        return _context
+        return Context
             .WorkableQueues
             .Include(x => x.Workables)
             .AsNoTracking()
             .FirstOrDefaultAsync();
     }
     
-    public void Create(WorkableQueue queue)
-    {
-        _context.WorkableQueues.Add(queue);
-    }
-
     public Task CommitAsync()
     {
-        return _context.SaveChangesAsync();
+        return Context.SaveChangesAsync();
     }
 }

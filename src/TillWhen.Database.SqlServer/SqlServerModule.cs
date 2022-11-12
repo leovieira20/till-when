@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TillWhen.Database.SqlServer.Repositories;
 using TillWhen.Domain.Aggregates.QueueAggregate;
 using TillWhen.Domain.Aggregates.WorkableAggregate;
+using TillWhen.Domain.Aggregates.WorkableQueueConfigurationAggregate;
 
 namespace TillWhen.Database.SqlServer;
 
@@ -24,6 +25,7 @@ public static class SqlServerModule
 
         services.AddScoped<IWorkableRepository, EfWorkableRepository>();
         services.AddScoped<IWorkableQueueRepository, EfWorkableQueueRepository>();
+        services.AddScoped<IWorkableQueueConfigurationRepository, EfWorkableQueueConfigurationRepository>();
 
         return builder;
     }
