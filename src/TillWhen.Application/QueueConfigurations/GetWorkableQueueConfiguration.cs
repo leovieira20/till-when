@@ -17,7 +17,7 @@ public static class GetWorkableQueueConfiguration
         
         public async Task<OneOf<WorkableQueueConfiguration>> Handle(Request request, CancellationToken cancellationToken)
         {
-            var configuration = await _repository.GetAsync(request.WorkableQueueId);
+            var configuration = await _repository.GetByQueueIdAsync(request.WorkableQueueId);
 
             return configuration;
         }

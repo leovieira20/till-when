@@ -1,4 +1,5 @@
 using TillWhen.Domain.Aggregates.QueueAggregate;
+using TillWhen.Domain.Aggregates.WorkableQueueConfigurationAggregate;
 
 namespace TillWhen.Database.SqlServer.Repositories;
 
@@ -14,6 +15,11 @@ public class EfRepositoryBase : IRepositoryBase
     public void Create<T>(T entity)
     {
         Context.Add(entity!);
+    }
+
+    public void Update<T>(T configuration)
+    {
+        Context.Update(configuration!);
     }
 
     public Task SaveAsync()

@@ -9,10 +9,17 @@ public class EfWorkableQueueConfigurationRepository : EfRepositoryBase, IWorkabl
     {
     }
 
-    public Task<WorkableQueueConfiguration?> GetAsync(Guid workableQueueId)
+    public Task<WorkableQueueConfiguration?> GetByQueueIdAsync(Guid queueId)
     {
         return Context
             .WorkableQueueConfigurations
             .FirstOrDefaultAsync();
+    }
+    
+    public Task<WorkableQueueConfiguration?> GetByIdAsync(Guid configurationId)
+    {
+        return Context
+            .WorkableQueueConfigurations
+            .FirstOrDefaultAsync(x => x.Id == configurationId);
     }
 }
