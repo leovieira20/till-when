@@ -19,24 +19,21 @@ steps:
   inputs:
     version: '6.x'
 
-- task: DotNetCoreCLI@2
+- task: Restore projects
   inputs:
     command: 'restore'    
 
-- task: DotNetCoreCLI@2
+- task: Build projects
   inputs:
-    command: 'build'
-    arguments: '--configuration $(buildConfiguration)'
-  displayName: 'dotnet build $(buildConfiguration)'
+    command: 'build'    
+  displayName: 'dotnet build'
 
-- task: DotNetCoreCLI@2
+- task: Run unit tests
   inputs:
     command: test
-    projects: '**/*Tests.Unit/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+    projects: '**/*Tests.Unit/*.csproj'    
 
-- task: DotNetCoreCLI@2
+- task: Run acceptance tests
   inputs:
     command: test
-    projects: '**/*Tests.Acceptance/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+    projects: '**/*Tests.Acceptance/*.csproj'    
