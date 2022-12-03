@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: till-when
+  annotations:
+    github.com/project-slug: leovieira20/till-when
+spec:
+  type: other
+  lifecycle: unknown
+  owner: leovieira20@gmail.com
