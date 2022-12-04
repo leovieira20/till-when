@@ -1,9 +1,8 @@
-﻿{
+{
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "profiles": {
     "TillWhen.Api": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5148",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

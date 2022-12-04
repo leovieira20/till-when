@@ -6,16 +6,13 @@ public static class SerilogRegistration
 {
     public static WebApplicationBuilder AddSerilog(this WebApplicationBuilder builder)
     {
-        var seqServerUrl = builder.Configuration["SeqServerUrl"];
-
-        Log.Logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(builder.Configuration)
-            .WriteTo.Console()
-            .WriteTo.Seq(seqServerUrl)
-            .Enrich.WithProperty("ApplicationName", "TillWhen.API")
-            .CreateLogger();
-
-        builder.Host.UseSerilog();
+        builder
+            .Host
+            .UseSerilog((context, _, configuration) =>
+                {
+                    configuration.ReadFrom.Configuration(context.Configuration);
+                }
+            );
 
         return builder;
     }
