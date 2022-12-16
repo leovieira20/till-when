@@ -15,6 +15,7 @@ public static class OpenTelemetryRegistration
             tracerProviderBuilder
                 .AddConsoleExporter()
                 .AddOtlpExporter()
+                .AddHoneycomb(builder.Configuration.GetHoneycombOptions())
                 .AddSource(serviceName)
                 .SetResourceBuilder(
                     ResourceBuilder.CreateDefault()

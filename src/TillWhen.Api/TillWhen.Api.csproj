@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <UserSecretsId>15da867d-3fd1-4eda-b1e3-e51c5c8afecc</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,10 +15,12 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="OpenTelemetry" Version="1.4.0-rc.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
         <PackageReference Include="Serilog" Version="2.12.0" />
         <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
         <PackageReference Include="Serilog.Sinks.Seq" Version="5.2.2" />
+        <PackageReference Include="Honeycomb.OpenTelemetry" Version="1.2.1" />
         <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.4.0-rc.1" />
         <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.4.0-rc.1" />
         <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.4.0-rc.1" />
