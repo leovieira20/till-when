@@ -11,11 +11,11 @@ namespace TillWhen.Database.SqlServer;
 
 public static class SqlServerModule
 {
-    public static WebApplicationBuilder AddSqlModule(this WebApplicationBuilder builder, IConfiguration configuration)
+    public static WebApplicationBuilder AddSqlModule(this WebApplicationBuilder builder)
     {
         var services = builder.Services;
         
-        var connectionString = configuration.GetConnectionString("TillWhen");
+        var connectionString = builder.Configuration.GetConnectionString("TillWhen");
 
         services
             .AddDbContext<TillWhenContext>(x =>

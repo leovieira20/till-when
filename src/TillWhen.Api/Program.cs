@@ -13,12 +13,13 @@ try
     Log.Information("Starting web app");
     
     var builder = WebApplication.CreateBuilder(args);
-    
+
     builder
+        .AddOpenTelemetry()
         .AddSerilog()
-        .AddSqlModule(builder.Configuration)
+        .AddSqlModule()
         .AddApplicationServices()
-        .AddControllers()
+        .AddFastEndpoints()
         .AddSwagger();
 
     var app = builder.Build();
